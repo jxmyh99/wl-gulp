@@ -1,3 +1,8 @@
+# 环境配置
+1. 去nodejs.org下载node
+2. 去git-scm.com下载git
+3. 打开git bash命令窗口或者cmd窗口
+4. 运行<code>git clone https://github.com/jxmyh99/wl-gulp</code>即可
 # 常用组件
     "babel-core": "^6.8.0",
     "babel-preset-es2015": "^6.6.0",
@@ -27,9 +32,11 @@
 1. jade模板引擎
 2. es6的支持，会自动转换为es5
 3. sass的支持
+
 # 一些问题
 - 后面的可能加入json-serve
     https://github.com/typicode/json-server
     这个可以更好的调试后台的数据
 - 针对不同的业务生成不同的目录。
 - bower的目录的支持问题
+- 后面会把这个加入到yeoman-generator的脚手架去，这样就会更简单创建项目了
