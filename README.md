@@ -24,10 +24,12 @@
     "main-bower-files": "^2.13.0",
     "wiredep": "^4.0.0"
 # 支持功能
-1 jade模板引擎
-2 es6的支持，会自动转换为es5
-3 sass的支持
-后面的可能加入json-serve
-https://github.com/typicode/json-server
-这个可以更好的调试后台的数据
-针对不同的业务生成不同的目录。
+1.jade模板引擎
+2.es6的支持，会自动转换为es5
+3.sass的支持
+# 一些问题
+-后面的可能加入json-serve
+    https://github.com/typicode/json-server
+    这个可以更好的调试后台的数据
+-针对不同的业务生成不同的目录。
+-bower的目录的支持问题
