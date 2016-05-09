@@ -1,8 +1,9 @@
 # 环境配置
-1. 去nodejs.org下载node
-2. 去git-scm.com下载git
-3. 打开git bash命令窗口或者cmd窗口
+1. 去[nodejs.org](https://nodejs.org/en/)下载node
+2. 去[git-scm.com](https://git-scm.com/download/)下载git
+3. 打开<code>git bash</code>命令窗口或者cmd窗口
 4. 运行<code>git clone https://github.com/jxmyh99/wl-gulp</code>即可
+
 # 常用组件
     "babel-core": "^6.8.0",
     "babel-preset-es2015": "^6.6.0",
