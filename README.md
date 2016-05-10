@@ -3,6 +3,7 @@
 2. 去[git-scm.com](https://git-scm.com/download/)下载git
 3. 打开<code>git bash</code>命令窗口或者cmd窗口
 4. 运行<code>git clone https://github.com/jxmyh99/wl-gulp</code>即可
+5. 这里推荐您使用<code>cnpm</code>来下载各个组件。天朝，你懂的。
 
 # 常用组件
     "babel-core": "^6.8.0",

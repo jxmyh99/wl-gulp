@@ -1,3 +1,9 @@
+/*
+	使用gulp-load-plugins来统一管理gulp的插件。
+	del,wiredep,browser是使用node来管理的包。
+	v1.0.1
+	-新增加了default、extrans等task
+ */
 var gulp = require('gulp'),
 	gulpLoadPlugins = require('gulp-load-plugins'),
 	browserSync = require('browser-sync'),
@@ -6,7 +12,7 @@ var gulp = require('gulp'),
 	$ = gulpLoadPlugins(),
 	reload = browserSync.reload;
 
-
+// 使用scss预处理
 gulp.task('styles', function() {
 	return gulp.src('app/styles/*.scss')
 		.pipe($.plumber())
@@ -25,7 +31,7 @@ gulp.task('styles', function() {
 			stream: true
 		}));
 });
-
+// js生成，这里可以使用Es6
 gulp.task('scripts', function() {
 	return gulp.src('app/scripts/**/*.js')
 		.pipe($.plumber())
@@ -115,6 +121,14 @@ gulp.task('fonts', function() {
 		.pipe(gulp.dest('.tmp/fonts'))
 		.pipe(gulp.dest('dist/fonts'));
 });
+gulp.task('extras', () => {
+	return gulp.src([
+		'app/*.*',
+		'!app/*.html'
+	], {
+		dot: true
+	}).pipe(gulp.dest('dist'));
+});
 //删除文件
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 //开启服务器
@@ -142,7 +156,7 @@ gulp.task('serve', ['styles', 'scripts', 'fonts', 'jade'], function() {
 	gulp.watch('app/fonts/**/*', ['fonts']);
 	gulp.watch('bower.json', ['wiredep', 'fonts']);
 });
-
+// bower替换，待深入研究
 gulp.task('wiredep', function() {
 	gulp.src('app/styles/*.scss')
 		.pipe(wiredep({
@@ -156,10 +170,15 @@ gulp.task('wiredep', function() {
 		}))
 		.pipe(gulp.dest('app'));
 });
-
-gulp.task('build', ['lint', 'jade', 'images', 'fonts', 'extras'], function() {
+// build
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], function() {
 	return gulp.src('dist/**/*').pipe($.size({
 		title: 'build',
 		gzip: true
 	}));
+});
+
+// 默认
+gulp.task('default', ['clean'], function() {
+	gulp.start('build');
 });
