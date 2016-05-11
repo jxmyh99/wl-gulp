@@ -1,6 +1,6 @@
 {
   "name": "wl-gulp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "wanglan",
   "main": "index.js",
   "scripts": {
