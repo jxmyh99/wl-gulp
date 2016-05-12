@@ -5,6 +5,8 @@
 4. 运行<code>git clone https://github.com/jxmyh99/wl-gulp</code>即可
 5. 这里推荐您使用<code>cnpm</code>来下载各个组件。天朝，你懂的。
 
+# 环境要求
+
 # 常用组件
     "babel-core": "^6.8.0",
     "babel-preset-es2015": "^6.6.0",
@@ -38,11 +40,37 @@
     "merge-stream": "^1.0.0",
     "vinyl-buffer": "^1.0.0",
     "wiredep": "^4.0.0"
+
+#目录结构及文件
+<pre>
+├─.tmp               ---> 本地服务器
+|
+├─templter           ---> 模板文件
+|   ├─jade
+|   ├─js
+|   |  └─public      -- 自定义的公用库
+|   └─scss
+|      └─public      -- 公用的scss的库
+├─rev                ---> md5码生成目录
+|   └─rev-manifest.json   md5码的json文件
+|
+└─webstart
+    ├─build          ---> 开发目录
+    │  ├─img
+    │  │  └─sprite   -- 待合并成雪碧图的图片文件
+    │  ├─js          -- js目录
+    │  └─scss        -- 待编译的SCSS文件
+    └─dist           ---> 生成目录
+       ├─img
+       ├─css
+       └─js
+</pre>
+
 # 支持功能
 1. jade模板引擎
 2. es6的支持，会自动转换为es5
 3. sass的支持
-
+4. css,js,image增加缓存机制，即增加md5码
 # 一些问题
 - 后面的可能加入json-serve
     https://github.com/typicode/json-server
