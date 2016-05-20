@@ -1,3 +1,9 @@
+# 操作步骤
+
+1. 如果有精灵图要组合运行<code>gulp sprite</code>,要生成2倍的请运行<code>gulp sprite:ret</code>
+2. 运行<code>gulp serve</code>起本地服务，并且监控jade,js,img(除sprite目录),scss文件
+3. 压缩，打包文件<code>gulp build 或者 gulp zip</code>
+
 # 环境配置
 1. 去[nodejs.org](https://nodejs.org/en/)下载node
 2. 去[git-scm.com](https://git-scm.com/download/)下载git
@@ -8,6 +14,7 @@
 # 环境要求
 
 # 常用组件
+
     "babel-core": "^6.8.0",
     "babel-preset-es2015": "^6.6.0",
     "babel-register": "^6.8.0",
@@ -51,15 +58,14 @@
 |   |  └─public      -- 自定义的公用库
 |   └─scss
 |      └─public      -- 公用的scss的库
-├─rev                ---> md5码生成目录
-|   └─rev-manifest.json   md5码的json文件
-|
+├─rev                ---> md5码(即css,image,js版本控制)
 └─webstart
     ├─build          ---> 开发目录
     │  ├─img
     │  │  └─sprite   -- 待合并成雪碧图的图片文件
     │  ├─js          -- js目录
     │  └─scss        -- 待编译的SCSS文件
+    ├─backup         ---> 开发目录备份
     └─dist           ---> 生成目录
        ├─img
        ├─css
@@ -71,10 +77,10 @@
 2. es6的支持，会自动转换为es5
 3. sass的支持
 4. css,js,image增加缓存机制，即增加md5码
-# 一些问题
+<!-- # 一些问题
 - 后面的可能加入json-serve
     https://github.com/typicode/json-server
     这个可以更好的调试后台的数据
 - 针对不同的业务生成不同的目录。
 - bower的目录的支持问题
-- 后面会把这个加入到yeoman-generator的脚手架去，这样就会更简单创建项目了
+- 后面会把这个加入到yeoman-generator的脚手架去，这样就会更简单创建项目了 -->

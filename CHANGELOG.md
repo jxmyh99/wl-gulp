@@ -17,3 +17,8 @@
         + clean:rev 清除md5码生成 的json文件
         + clean:build 清除工作目录
         + clean 清除.tmp和dest目录
+- 2015/5/13
+    - 删除md5码生成的task，原因是每次都会生成两个文件。
+- 2015/5/20
+    - 重新组织了下各个task
+    - 使用es6来编写了gulpfile.js文件
