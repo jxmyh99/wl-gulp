@@ -1,0 +1,222 @@
+/*
+    表单布局
+*/
+.md15{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder{
+    color: #999;
+}
+.u-bbno{
+    border-bottom: 0!important;
+}
+.c99{
+    color: #999;
+}
+/*h3 顶部的信息*/
+.u-input-td{
+    padding-top: 10px;
+    padding-bottom: 5px;
+    font-size: 12px;
+}
+/*
+    三角
+    <span class="u-angle"><i></i></span>
+    默认为向底
+*/
+.u-angle{
+    position: absolute;
+    right: 0;
+    top:25px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+}
+.u-angle i{
+    position: relative;
+    display: block;
+}
+    /*箭头向上*/
+    .u-angle-top{
+        top:8px;
+    }
+    .u-angle-top i:after,.u-angle-top i:before{
+        content: '';
+        position: absolute;
+        top:0;
+        left:0;
+        display: block;
+        width:0;
+        height:0;
+        border-left:8px solid transparent;
+        border-right:8px solid transparent;
+        border-top:8px solid transparent;
+        border-bottom:8px solid #b2b2b2;
+    }
+    .u-angle-top i:after{
+        top:2px;
+        border-bottom: 8px solid #fff;
+    }
+
+    /*箭头向下*/
+    .u-angle-down{
+        top:20px;
+    }
+    .u-angle-down i:after,.u-angle-down i:before{
+        content: '';
+        position: absolute;
+        top:0;
+        left:0;
+        display: block;
+        width:0;
+        height:0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #b2b2b2;
+    }
+    .u-angle-down i:after{
+        top: -2px;
+        border-top: 8px solid #fff;
+    }
+    /*箭头向右*/
+    .u-angle-right{
+        top:15px;
+        right: -5px;
+    }
+    .u-angle-right i:after,.u-angle-right i:before{
+        content: '';
+        position: absolute;
+        top:0;
+        left:0;
+        display: block;
+        width:0;
+        height:0;
+        border-top:8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-left: 8px solid #b2b2b2;
+    }
+    .u-angle-right i:after{
+        left: -2px;
+        border-left: 8px solid #fff;
+    }
+/*箭头结束*/
+.m-input{
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    font-size: 14px;
+    background-color: #fff;
+    border-bottom: 1px solid #ededed;
+}
+.m-input dt,.m-input dd{
+    float: left;
+}
+.m-input dt{
+    width: 35%;
+    padding-top: 10px;
+}
+.m-input dd{
+    position: relative;
+    width: 65%;
+}
+.m-input .u-code{
+    position: absolute;
+    top:12px;
+    right: 0;
+    display: block;
+    height: 25px;
+    padding: 0 5px 0 15px;
+    line-height: 25px;
+    text-align: center;
+    color: #ff9100;
+    border-left: 1px solid #ededed;
+}
+.m-input label{
+    line-height: 45px;
+}
+.m-input label,.m-input input{
+    display: block;
+    height: 45px;
+    width: 100%;
+}
+/*切换选择框*/
+.u-radio input{
+    display: none;
+}
+.u-radio input +  label{
+    display: inline;
+    padding: 8px 18px;
+    text-align: center;
+    font-size: 14px;
+    background-color: #f2f2f2;
+}
+.u-radio input:checked +  label{
+    background-color: #ff9100;
+    color: #fff;
+}
+/*有固定按键空出的位置*/
+.u-fixed50{
+    height: 50px;
+    line-height: 50px;
+}
+/*登录按扭--非固定*/
+.m-input-btn,.m-input-btnfixed{
+    padding: 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+/*登录按钮--固定*/
+.m-input-btnfixed{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    padding: 0;
+}
+    .m-input-btn input,.m-input-btn a,.m-input-btnfixed input,.m-input-btnfixed a{
+        display: block;
+        width: 100%;
+        height: 45px;
+        background-color: #ff9100;
+        font-size: 14px;
+        color: #fff;
+        text-align: center;
+    }
+    .m-input-btn a,.m-input-btnfixed a{
+        line-height: 45px;
+    }
+    .m-input-btn a:link{
+        color: #fff;
+    }
+/*两分按键*/
+.u-input-btn-two{
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+.u-input-btn-two a{
+    display: table-cell;
+}
+.u-input-btn-two a:first-child{
+    width: 150%;
+    padding-right: 5px;
+    background-clip: content-box;
+}
+.u-input-btn-two a:last-child{
+    -webkit-box-shadow: 0px 0px 0px 1px #ff9100;
+    box-shadow: 0px 0px 0px 1px #ff9100;
+    background-color: #fff;
+    color: #ff9100;
+}
+/*初始化日期选择*/
+.android-ics .dwv{border-bottom-color:#ff9100!important;color:#ff9100!important;}
+.android-ics .dw .dwwol{border-top-color:#ff9100!important;border-bottom-color:#ff9100!important;}
+.android-ics .dw .dwb-a{background:#e5e5e5!important;}
+.android-ics.light .dwb-a{color:#444!important;}
+button[disabled], html input[disabled] {
+    cursor: default;
+    background-color: #fff;
+}

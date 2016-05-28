@@ -8,13 +8,26 @@ import pngquant from "imagemin-pngquant"; //深度压缩图片
 import revDev from "rev-del";
 import bf from "vinyl-buffer"; //流缓存
 import merge from "merge-stream"; //合并流
+import bowerFiles from "main-bower-files";
 import {
     stream as wiredep
 } from 'wiredep';
-module.exports = gulp;
 // 定义常量
 const $ = gulpLoadPlugins(); //使用$来代替gulp-load-plugins，使用$.xxxx()这样来导入gulp的插件
 const reload = browserSync.reload; //浏览器同步刷新
+
+/*
+* activity : 活动页面(自有的)
+* module   : 自有的页面
+* partner  : 合作伙伴的页面
+* project_name : 项目名字
+ */
+let wl = true,//是否是网兰老的目录
+    htmlmin = false,//html压缩
+    arr = ['activity','module','partner'],
+    project_name = 'abc',
+    dist_file = wl ? arr[0] +'/'+project_name+'/' : ' ';
+
 
 /*
  *  路径变量
@@ -24,13 +37,13 @@ let date = new Date(), //获取日期
     year = date.getFullYear(), //获取年份
     month = date.getMonth() + 1, //获取月份
     day = date.getDate(), //获取日
-    zip_day = date.getDate() + '-' + date.getHours(), //组成唯一的目录即日加上小时
-    o_path = 'D://yeoman', //项目存档的初始地址
+    zip_day = project_name, //组成唯一的目录即日加上小时
+    o_path = '../project_zip', //项目存档的初始地址
     save_project = o_path + '\/' + year + '\/' + month + '月份/', //项目存档的目录 目录地址为 初始地址+年份+月份
-    zip_project = year + '-' + month + '-' + day, //压缩生成的文件名
+    zip_project = project_name, //压缩生成的文件名
     build = 'webstart/build/', //开发目录
     dist = 'webstart/dist/' + year + '\/' + month + '月份/' + zip_day + '/', //输出目录
-    backup = 'webstart/backup/' + year + '\/' + month + '月份/' + zip_day + '/', //输出目录
+    backup = '../project_backup/' + year + '\/' + month + '月份/' + zip_day + '/', //输出目录
     server_root = ".tmp/", //静态服务器根目录
     path = {
         s_sass: build + "scss/", //待编译的源文件路径
@@ -129,13 +142,16 @@ gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
 
 //es6 to es5
 gulp.task('script', ['lint'], () => {
-    return gulp.src([path.s_js + '**/*.js'])
+    gulp.src([path.s_js + '**/*.js'])
         .pipe($.plumber())
         .pipe($.sourcemaps.init())
         .pipe($.babel({
             presets: ['es2015']
         }))
         .pipe($.sourcemaps.write())
+        .pipe($.rename({
+            suffix: ".min" //后缀
+        }))
         .pipe($.rev())
         .pipe(gulp.dest(path.server_js))
         .pipe($.rev.manifest())
@@ -144,7 +160,6 @@ gulp.task('script', ['lint'], () => {
             stream: true
         }));
 });
-
 // sass
 gulp.task('sass', ['fonts', 'imagemin'], () => {
     return gulp.src([path.s_sass + '**/*.scss', './rev/img/*.json', './rev/font/*.json'])
@@ -157,19 +172,61 @@ gulp.task('sass', ['fonts', 'imagemin'], () => {
             includePaths: ['.']
         })).on('error', $.sass.logError)
         .pipe($.autoprefixer({
-            vrowser: ['> 1%', 'last 2 versions', 'Firefox ESR']
+            vrowser: ['last 2 version', '> 5%', 'safari 5', 'ios 6', 'android 4']
         }))
         .pipe($.sourcemaps.write())
-        .pipe(gulp.dest(path.server_css))
-        .pipe($.rev())
-        .pipe($.rev.manifest())
-        .pipe(gulp.dest('./rev/css'))
+        .pipe($.rename({
+            suffix: ".min" //后缀
+        }))
+        .pipe($.cssnano())
+        .pipe(gulp.dest('./css'))
         .pipe(reload({
             stream: true
         }));
 });
+// 合并css
+gulp.task('css',['sass'],()=>{
+    // 生成在主目录css
+    gulp.src('./css/*')
+        .pipe($.concat('main.css'))
+        .pipe($.rename({suffix:'.min'}))
+        .pipe($.cssnano())
+        .pipe(gulp.dest(path.server_css))
+        .pipe($.rev())
+        .pipe($.rev.manifest())
+        .pipe(gulp.dest('./rev/css'));
+    // 清除主目录css的所有文件
+    gulp.src(['./css'], {
+                read: false
+            })
+            .pipe($.plumber())
+            .pipe($.rimraf({
+                force: true
+            }));
 
-
+})
+// 合并JS
+gulp.task('js',['script'],()=>{
+    if(!wl){
+         // 生成在主目录css
+        gulp.src('./js/*')
+            .pipe($.concat('main.js'))
+            .pipe($.rename({suffix:'.min'}))
+            .pipe($.cssnano())
+            .pipe(gulp.dest(path.server_css))
+            .pipe($.rev())
+            .pipe($.rev.manifest())
+            .pipe(gulp.dest('./rev/js'));
+        // 清除主目录css的所有文件
+        gulp.src(['./js'], {
+                    read: false
+                })
+                .pipe($.plumber())
+                .pipe($.rimraf({
+                    force: true
+                }));
+            }
+})
 //字体文件生成
 gulp.task('fonts', () => {
     return gulp.src(require('main-bower-files')('**/*.{eot,svg,ttf,woff,woff2}', function(err) {})
@@ -180,8 +237,26 @@ gulp.task('fonts', () => {
         .pipe($.rev.manifest())
         .pipe(gulp.dest('./rev/font'));
 });
+// 压缩图片
+gulp.task('imagemin', () => {
+    return gulp.src([path.s_img + '**/*.{jpg,jpeg,gif,svg,png}',"!"+path.s_simg+"*"])
+        .pipe($.plumber())
+        .pipe($.imagemin({
+            progressive: true,
+            svgoPlugins: [{
+                removeViewBox: false
+            }],
+            use: [pngquant()]
+        }))
+        .pipe(gulp.dest(path.server_img))
+        .pipe($.rev())
+        .pipe($.rev.manifest())
+        .pipe(gulp.dest('./rev/img'));
+
+});
+
 //jade
-gulp.task('jade', ['script', 'sass'], () => {
+gulp.task('jade',() => {
     return gulp.src([build + "**/*.jade", './rev/**/*'])
         .pipe($.plumber())
         .pipe($.revCollector())
@@ -190,14 +265,18 @@ gulp.task('jade', ['script', 'sass'], () => {
             pretty: true
         }))
         .pipe($.sourcemaps.write())
+        .pipe($.inject(gulp.src(require('main-bower-files')('**/*'),{read:false}),{relative:true}))
         .pipe(gulp.dest(server_root))
         .pipe(reload({
             stream: true
         }));
 });
+
+
+gulp.task('clean',['clean:server','clean:build','clean:rev']);
 //删除文件
-gulp.task('clean', () => {
-    return gulp.src([server_root, dist], {
+gulp.task('clean:server', () => {
+    return gulp.src([server_root], {
             read: false
         })
         .pipe($.plumber())
@@ -215,7 +294,7 @@ gulp.task('clean:build', () => {
             force: true
         }));
 });
-//删除rev文件
+//删除rev目录文件
 gulp.task('clean:rev', () => {
     return gulp.src('./rev/*', {
             read: false
@@ -225,93 +304,87 @@ gulp.task('clean:rev', () => {
             force: true
         }));
 });
-// 压缩集合
-gulp.task('compass', ['imagemin', 'cssmin', 'jsmin']);
-// 压缩图片
-gulp.task('imagemin', () => {
-    return gulp.src(path.s_img + '**/*')
+//删除dist目录文件
+gulp.task('clean:dist', () => {
+    return gulp.src(dist+'/*', {
+            read: false
+        })
         .pipe($.plumber())
-        .pipe($.imagemin({
-            progressive: true,
-            svgoPlugins: [{
-                removeViewBox: false
-            }],
-            use: [pngquant()]
-        }))
-        .pipe(gulp.dest(path.server_img))
-        .pipe($.rev())
-        .pipe($.rev.manifest())
-        .pipe(gulp.dest('./rev/img'));
-
+        .pipe($.rimraf({
+            force: true
+        }));
 });
-// 压缩css
-gulp.task('cssmin', () => {
-    return gulp.src(path.server_css + '*.css')
-        .pipe($.plumber())
-        .pipe($.sourcemaps.init())
-        .pipe($.concat(zip_project+'.css'))
-        .pipe($.rename({
-            // dirname: "main/",   //目录名
-            // basename: "aloha",           //基本命名
-            // prefix: "bonjour-",          //前缀
-            suffix: ".min" //后缀
-                // extname: ".md"               //拓展名
-        }))
-        .pipe($.cssnano())
-        .pipe($.sourcemaps.write('.'))
-        .pipe(gulp.dest(path.d_css))
-        .pipe($.rev())
-        .pipe($.rev.manifest())
-        .pipe(gulp.dest('./rev/css'));
-});
+// 拷贝模板文件到工作目录
+gulp.task('copy',['clean'],()=>{
+    return gulp.src('./templter/module/**/*').pipe(gulp.dest(build));
+})
 
 
-// 压缩js
-gulp.task('jsmin', () => {
-    return gulp.src(path.server_js + '*.js')
-        .pipe($.plumber())
-        .pipe($.sourcemaps.init())
-        .pipe($.uglify({
-            mangle: true, //类型：Boolean 默认：true 是否修改变量名
-            compress: true //类型：Boolean 默认：true 是否完全压缩
-        }))
-        .pipe($.concat(zip_project + '.js', {
-            newLine: ';'
-        }))
-        .pipe($.rename({
-            // dirname: "main/text/ciao",   //目录名
-            // basename: "aloha",           //基本命名
-            // prefix: "bonjour-",          //前缀
-            suffix: ".min" //后缀
-                // extname: ".md"               //拓展名
-        }))
-        .pipe($.sourcemaps.write('.'))
-        .pipe(gulp.dest(path.d_js))
-        .pipe($.rev())
-        .pipe($.rev.manifest())
-        .pipe(gulp.dest('./rev/js'));
+// 生产阶段拷贝文件
+gulp.task('pack:copy',()=>{
+    let img = wl ? dist + 'Images/'+dist_file : dist+'img',
+        js = wl ? dist + 'Scripts/'+dist_file : dist+'js';
+
+    // 修改img文件里的img引用
+    gulp.src([path.server_img + "**/*"]).pipe(gulp.dest(img));
+    // 拷贝js文件到指定目录
+    gulp.src(path.server_js+'*.js').pipe(gulp.dest(js));
+    // 拷贝公用文件到指定目录
+    if(wl){
+        gulp.src('./webstart/resource/**/*').pipe(gulp.dest(dist));
+    }
+
+})
+
+// css文件内的图片资源替换名
+gulp.task('pack:css',()=>{
+    let img = wl ? '../../../Images/'+dist_file : '../img',
+        css = wl ? dist + 'Content/'+dist_file : dist+'css';
+    return gulp.src(path.server_css+'*.css').pipe($.replace('img/',img)).pipe(gulp.dest(css));
+})
+
+// 拷贝main-bower-fles
+gulp.task('pack:bower',() => {
+    let css = wl ? dist + 'Content/public/' : dist + 'css/public',
+        js = wl ? dist + 'Scripts/public/' : dist + 'js/public',
+        cssFiles = gulp.src(bowerFiles('**/*.css', function(err) {})).pipe(gulp.dest(css)),
+        jsFiles = gulp.src(bowerFiles('**/*.js', function(err) {})).pipe($.uglify()).pipe(gulp.dest(js));
+    return gulp.src(server_root+'*.html')
+    .pipe($.inject(gulp.src(bowerFiles(),{read:false},{relative:true,empty:true})))
+    .pipe($.inject(merge(cssFiles,jsFiles)))
+    .pipe(gulp.dest(dist));
+})
+
+gulp.task('wiredep', () => {
+  gulp.src(server_root+'*.html')
+    .pipe(wiredep({
+      ignorePath: /^(\.\.\/)*\.\./
+    }))
+    .pipe(gulp.dest(server_root));
 });
 
-// 压缩html
-gulp.task('htmlmin', ['jade', 'cssmin', 'jsmin'], () => {
-    return gulp.src(server_root + "**/*.html")
-        .pipe($.htmlmin({ collapseWhitespace: true }))
-        .pipe(gulp.dest(dist));
+// 生产阶段替换资源文件名
+gulp.task('pack:ren',['pack:bower','pack:copy','pack:css'],()=>{
+    let dir_name = '\"/' + dist,
+        css = wl ? '\"Content/'+dist_file : '\"css/';
+  return gulp.src(dist+ "**/*.html")
+    .pipe($.replace('\"css/',css))
+    .pipe($.replace('\"img/',wl ? '\"Images/'+dist_file : '\"img/'))
+    .pipe($.replace('\"js/',wl ? '\"Scripts/'+dist_file : '\"js/'))
+    .pipe($.replace('\"./webstart/resource/','\"'))
+    .pipe($.replace(dir_name,'\"'))
+    .pipe($.if('*.html', $.htmlmin({ //如有需要，请开启
+            collapseWhitespace: htmlmin
+        })))
+    .pipe(gulp.dest(dist));
 })
 
 // 打包文件
-gulp.task('zip', ['pack:dist'], () => {
+gulp.task('zip', () => {
     return gulp.src(dist + '/**/*')
         .pipe($.plumber())
         .pipe($.zip(zip_project + '.zip'))
         .pipe(gulp.dest(save_project));
-});
-
-// 打包到生产目录
-gulp.task('pack:dist', ['htmlmin','extras'], () => {
-    return gulp.src(save_project + "**/*")
-        .pipe($.plumber())
-        .pipe(gulp.dest(dist));
 });
 
 //备份到备份目录
@@ -319,90 +392,78 @@ gulp.task('backup', () => {
     return gulp.src(build + '**/*')
         .pipe($.plumber())
         .pipe(gulp.dest(backup));
-})
+});
 
 // 其它文件一次输出到生产目录
 gulp.task('extras', () => {
     return gulp.src([
-        '.tmp/*.*',
+        server_root+'*.*',
         '!tmp/*.html'
     ], {
         dot: true
     }).pipe(gulp.dest(dist));
 });
 
-// 本地起服务
 
-gulp.task('watch', ['jade'], () => {
-    browserSync({
-        notify: false,
-        port: 9000,
+// 本地起服务
+/*
+更多信息请查看 https://www.npmjs.com/package/gulp-usemin
+如果bower不能及时生成 。把jade 改为 pack:bower
+ */
+gulp.task('serve', ['js','css','jade'], () => {
+    browserSync.init({
+        notify: true,
+        open: false,
+        port: 3000,
+        // 自己在局域网中的ip地址
+        host: '10.0.0.189',
+        logLevel: "debug",
+        //记录连接
+        logConnections: true,
         server: {
-            baseDir: ['.tmp'],
+            baseDir: ['./.tmp'],
             routes: {
-                '/bower_components': 'bower_components'
+                '/bower_components': 'bower_components',
+                '/webstart/resource':'webstart/resource/'
             }
         }
     });
 
     gulp.watch([
-        path.s_sass + "**/*.scss",
-        path.s_js + "**/*.js",
-        path.s_img + "**/*",
-        build + "**/*.jade",
         server_root + '**/*.html',
-        server_root + 'fonts/**/*'
+        path.s_img + "**/*.{jpg,jpeg,gif,svg,png}",
+        'app/fonts/**/*'
     ]).on('change', reload);
 
-    gulp.watch(path.s_sass + "**/*.scss", ['sass']);
+    gulp.watch(path.s_sass + "**/*.scss", ['css']);
     gulp.watch(build + "**/*.jade", ['jade']);
     gulp.watch(path.s_js + "**/*.js", ['script']);
-    gulp.watch(path.s_img + "*", ['imagemin']);
-    gulp.watch('.tmp/fonts/**/*', ['fonts']);
+    gulp.watch([path.s_img + "**/*.{jpg,jpeg,gif,svg,png}",'!'+path.s_simg +'*'], ['imagemin']);
+    gulp.watch(server_root+'fonts/**/*', ['fonts']);
+    gulp.watch('bower.json', ['wiredep']);
 });
 
 
-// 默认
+// 初始化步骤
+gulp.task('default',['copy','serve']);
 
-gulp.task('build', ['zip']);
+// 针对没有带依赖的打包
+gulp.task('build',['pack:ren']);
+
+// 最后的打包
+gulp.task('build:end',['backup','zip']);
 
 // 帮助说明
-gulp.task('default', () => {
-    console.log("sass       :sass编译");
-    console.log("jade       :jade编译");
-    console.log("script     :es6转es5(带eslint验证)");
-    console.log("clean      :删除调试目录文件和输出目录文件");
+gulp.task('help', () => {
+    console.log("css         :sass编译");
+    console.log("jade        :jade编译");
+    console.log("js          :es6转es5(带eslint验证)");
+    console.log("clean       :删除调试目录文件和输出目录文件");
     console.log("clean:build :删除开发目录文件");
-    console.log("sprite         :精灵图生成");
-    console.log("sprite:ret     :精灵图和2倍精灵图生成");
-    console.log("compress   :压缩集合");
-    console.log("imagemin   :图片压缩");
-    console.log("cssmin         :css压缩");
-    console.log("jsmin      :js压缩");
-    console.log("replace        :html页面内的css,js资源替换名字");
-    console.log("zip        :从输出目录zip压缩输出");
-    console.log("pack:dist   :打包到输出目录");
-    console.log("lint       :eslint验证");
-    console.log("font       :字体打包");
-    console.log("serve      :本地服务带监控");
-    console.log("serve:dist     :输出目录启动本地服务");
-    console.log("wiredep        :bower组件资源替换并且下载到templter/js/public/目录下");
-    console.log("help       :输出帮助信息");
-    console.log("backup       :备份工作目录");
+    console.log("sprite      :精灵图生成");
+    console.log("sprite:ret  :精灵图和2倍精灵图生成");
+    console.log("zip         :从输出目录zip压缩输出");
+    console.log("serve       :本地服务带监控");
+    console.log("help        :输出帮助信息");
+    console.log("backup      :备份工作目录");
 });
-
-
-/*
-1.精灵图合并（区分是不是要生成2倍精灵图）
-2.启用本地服务
-
-3.输出
-    - 把本地服务目录拷贝到输出目录
-        -   js不压缩
-        -   html不压缩
-        -   css压缩  合并后的文件名为'年-月-日'格式，待优化
-        -   图片压缩
-    - 把工作目录备份拷贝到webstart/backup/zip/save_project/zip_project目录下
-4.测试输出目录
-5.压缩输出
- */

@@ -1,0 +1,59 @@
+.m-sf-btn{
+    padding: 0;
+    overflow: hidden;
+    background-color: transparent;
+    color:#fff;
+}
+.pd20{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 62px;
+}
+.h42{
+    line-height: 42px;
+}
+.btn-left{
+    float: left;
+    width: 60%;
+    padding-left: 15px;
+    background-color: #0294e8;
+}
+.btn-left li{
+    float: left;
+    width: 50%;
+}
+.btn-right{
+    float: right;
+    width: 40%;
+    background-color: #0276ba;
+}
+.btn-right li{
+    float: left;
+    width: 50%;
+    text-align: center;
+    font-size: 12px;
+}
+.btn-right li.first{
+    background-color: #027ec5;
+}
+.btn-left li i{
+    font-size: 10px;
+    background-color: #fff;
+    padding: 2px 3px;
+    color:#0294e8;
+}
+.new_l{
+    width: 80%;
+}
+.new_r{
+    width: 20%;
+}
+.btn-right img{
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 0 auto 5px;
+}
+.m-btn-no{
+    height: 62px;
+}

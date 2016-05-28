@@ -1,0 +1,236 @@
+/*遮罩层*/
+#leftmask{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 99;
+    display: none;
+}
+/*选择通用*/
+.tancbox{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    z-index: 200;
+    display: none;
+    overflow: hidden;
+}
+.tancbox .swleft {
+    min-height:100%;
+    overflow:hidden;
+    width:100%;
+    background:#fff;
+    -webkit-transform:translate(450px,0);
+    transform:translate(450px,0);
+    -webkit-transition:-webkit-transform .5s;
+    transition:transform .5s;
+    -webkit-backface-visibility:hidden;
+    -webkit-transform-style:preserve-3d;
+    -webkit-transform-origin:0 0
+}
+.tancbox .swleft-block {
+    width: 100%;
+    -webkit-transform:translate(0px,0px);
+    transform:translate(0px,0px);
+    -webkit-transition:-webkit-transform .5s;
+    transition:transform .5s;
+    -webkit-backface-visibility:hidden;
+    -webkit-transform-style:preserve-3d;
+    -webkit-transform-origin:0 0
+}
+/*车型选择通用*/
+.b-return {
+    width: 100%;
+    height: 39px;
+    line-height: 39px;
+    color: #FFF;
+    background: #ff9100;
+    border-top: 1px solid #1A5A92;
+    position: relative;
+    z-index: 19;
+    text-align: center;
+}
+.b-return .btn-return {
+    width: 39px;
+    height: 39px;
+    background: url(http://image.bitautoimg.com/uimg/mbt2014/images/m_header_nav_search.png) no-repeat -78px -76px;
+    background-size: 100px auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-indent: -999em;
+}
+.b-return span {
+    font-size: 1.8rem;
+}
+/*城市选择*/
+.layout .city_box {
+    margin-bottom: 14px;
+}
+.layout .city_box:last-child {
+    margin-bottom: 50px;
+}
+.layout .city_box h3 {
+    color: #444;
+    text-indent: 10px;
+}
+.layout .city_list {
+    overflow: hidden;
+    zoom: 1;
+    margin-top: 6px;
+}
+.layout .city_list li {
+    float: left;
+    width: 25%;
+    font-size: 14px;
+}
+.layout .city_list li a {
+    background: none repeat scroll 0 0 #fff;
+    cursor: pointer;
+    display: block;
+    height: 36px;
+    line-height: 36px;
+    margin: 0 3px 6px;
+    overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+    color:#444;
+}
+.city_letter .city_list li a {
+    white-space: nowrap;
+    display: block;
+    height: 36px;
+    background: #fff;
+    line-height: 36px;
+    margin: 0 3px 6px 3px;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+}
+.layout .city_list .city_box_clo a {
+    background: #ff9100;
+    color: #fff;
+}
+.layout .city_list li {
+    padding: 0px 0px 0px 0px !important;
+}
+.layout .ins_list li {
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
+.layout .ins_list li a {
+    padding: 0 10px!important;
+    margin: 0!important;
+    font-size: 16px;
+    height: 50px;
+    line-height: 50px;
+    text-align: left;
+}
+.layout-close {
+    position: fixed;
+    bottom: 5px;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    width: 100%;
+}
+.layout-close img {
+    display: block;
+    width: 2.5em;
+    height: 2.5em;
+    margin: 0 auto;
+}
+.layout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: #f7f7f7;
+    display: none;
+}
+.close_box{
+    position: fixed;
+    bottom: 10px;
+    left:50%;
+    margin-left:-22px;
+    display: none;
+}
+.close_box a.close{
+    display: block;
+    width: 44px;
+    height: 44px;
+    background: url(../../Images/public/icon/icon_close_red.png) no-repeat center;
+    background-size: 100% 100%;
+    text-indent: -999em;
+    overflow: hidden;
+}
+.fixedb{
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 5px;
+    width: 100%;z-index: 999;}
+.wrap li.cu{
+    background: #ff9100;color: #fff;
+}
+.hand-wx-img{
+    display: none;
+}
+.hand-wx-img img{
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/*城市选择和车型选择*/
+/*品牌选择的字符开始*/
+.letter-list{
+    width: 100%;
+    font-size: 1.6rem;
+    padding: 15px 7px 0;
+    overflow: hidden;
+}
+.letter-list li{
+    float: left;
+    width: 12.5%;
+    margin-bottom: 6px;
+    text-align: center;
+}
+.letter-list li a{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 3px;
+    color: #444;
+    background-color: #fff;
+}
+.tt-small{
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    background-color: #f3f3f3;
+    color: #444;
+    font-size: 1.3rem;
+    padding: 0 15px;
+}
+.wrap li{
+    padding: 10px 20px;
+    overflow: hidden;
+    background-color: #fff;
+    color: #999;
+    border-bottom: 1px solid #e2e2e2;
+    font-size: 14px;
+}
+.wrap li:hover,.wrap li.cur{
+    color: #fff;
+    background-color: #ff9100;
+}
