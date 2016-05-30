@@ -6,6 +6,9 @@ node_modules
 bower_components
 
 #忽略app下面的一些文件
+.tmp
+webstart/build
+webstart/dist
 app/*.jade
 app/*.html
 app/scripts/*.js

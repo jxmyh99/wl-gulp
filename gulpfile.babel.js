@@ -22,10 +22,10 @@ const reload = browserSync.reload; //浏览器同步刷新
 * partner  : 合作伙伴的页面
 * project_name : 项目名字
  */
-let wl = true,//是否是网兰老的目录
+let wl = true,//是否是网兰的项目即是否是手机端页面
     htmlmin = false,//html压缩
     arr = ['activity','module','partner'],
-    project_name = 'abc',
+    project_name = 'summer',
     dist_file = wl ? arr[0] +'/'+project_name+'/' : ' ';
 
 
@@ -172,7 +172,7 @@ gulp.task('sass', ['fonts', 'imagemin'], () => {
             includePaths: ['.']
         })).on('error', $.sass.logError)
         .pipe($.autoprefixer({
-            vrowser: ['last 2 version', '> 5%', 'safari 5', 'ios 6', 'android 4']
+            vrowser: ['last 2 version', '> 5%', 'safari 5', 'ios 6', 'android 4','OperaMobile']
         }))
         .pipe($.sourcemaps.write())
         .pipe($.rename({
@@ -286,7 +286,7 @@ gulp.task('clean:server', () => {
 });
 //删除工作目录的文件
 gulp.task('clean:build', () => {
-    return gulp.src(build + '/*', {
+    return gulp.src(build, {
             read: false
         })
         .pipe($.plumber())
@@ -304,18 +304,9 @@ gulp.task('clean:rev', () => {
             force: true
         }));
 });
-//删除dist目录文件
-gulp.task('clean:dist', () => {
-    return gulp.src(dist+'/*', {
-            read: false
-        })
-        .pipe($.plumber())
-        .pipe($.rimraf({
-            force: true
-        }));
-});
+
 // 拷贝模板文件到工作目录
-gulp.task('copy',['clean'],()=>{
+gulp.task('copy',()=>{
     return gulp.src('./templter/module/**/*').pipe(gulp.dest(build));
 })
 
@@ -445,7 +436,12 @@ gulp.task('serve', ['js','css','jade'], () => {
 
 
 // 初始化步骤
-gulp.task('default',['copy','serve']);
+gulp.task('default',['clean'],()=>{
+    gulp.start('build:start');
+});
+gulp.task('build:start',['copy'],()=>{
+    gulp.start('serve');
+});
 
 // 针对没有带依赖的打包
 gulp.task('build',['pack:ren']);
