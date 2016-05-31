@@ -1,15 +1,16 @@
 extends ../../templter/jade/base
 //- 加入js
 append scripts
-  script(src='js/main.min.js')
+	script(src='js/main.min.js')
 //- 加入css
 append stylesheets
-  link(rel="stylesheet", href="css/main.min.css")
+	link(rel="stylesheet", href="css/main.min.css")
 //- 修改网页标题
 append head
-  - var title = 'wl-gulp demo'
-  title #{title}
+	- var title = 'wl-gulp demo'
+	title #{title}
 //- 加入中间内容
 block content
-  - var title = 'wl-gulp'
-  h3.sprite #{title}
+	ul.menu
+		each value in _json.title.comments
+			li= value.id

@@ -2,6 +2,9 @@
 
 // 引入gulp和gulp的一些插件
 import gulp from 'gulp'; //gulp
+import fs from 'fs';
+import foldero from 'foldero';
+import jade from 'jade';
 import gulpLoadPlugins from 'gulp-load-plugins'; //统一管理gulp的插件
 import browserSync from 'browser-sync'; //浏览器同步测试工具
 import pngquant from "imagemin-pngquant"; //深度压缩图片
@@ -257,12 +260,38 @@ gulp.task('imagemin', () => {
 
 //jade
 gulp.task('jade',() => {
+    let siteData = {};
+    if(fs.existsSync('webstart/_data/')){
+        siteData = foldero('webstart/_data/',{
+            recurse:true,
+            whitelist:'(.*/)*.+\.(json)$',
+            loader:function loadAsString(file) {
+              let json = {};
+              try {
+                  json = JSON.parse(fs.readFileSync(file, 'utf8'));
+              }
+              catch(e) {
+                console.log('Error Parsing JSON file: ' + file);
+                console.log('==== Details Below ====');
+                console.log(e);
+              }
+              return json;
+            }
+        })
+    }
     return gulp.src([build + "**/*.jade", './rev/**/*'])
         .pipe($.plumber())
         .pipe($.revCollector())
         .pipe($.sourcemaps.init())
         .pipe($.jade({
-            pretty: true
+            jade:jade,
+              pretty: true,
+              locals: {
+                debug: true,
+                site: {
+                  data: siteData
+                }
+              }
         }))
         .pipe($.sourcemaps.write())
         .pipe($.inject(gulp.src(require('main-bower-files')('**/*'),{read:false}),{relative:true}))
@@ -427,7 +456,7 @@ gulp.task('serve', ['js','css','jade'], () => {
     ]).on('change', reload);
 
     gulp.watch(path.s_sass + "**/*.scss", ['css']);
-    gulp.watch(build + "**/*.jade", ['jade']);
+    gulp.watch([build + "**/*.jade", "webstart/_data/**/*.json"], ['jade']);
     gulp.watch(path.s_js + "**/*.js", ['script']);
     gulp.watch([path.s_img + "**/*.{jpg,jpeg,gif,svg,png}",'!'+path.s_simg +'*'], ['imagemin']);
     gulp.watch(server_root+'fonts/**/*', ['fonts']);

@@ -11,7 +11,7 @@
 4. 运行<code>git clone https://github.com/jxmyh99/wl-gulp</code>即可
 5. 这里推荐您使用<code>cnpm</code>来下载各个组件。天朝，你懂的。
 6. 运行<code>gulp install</code>下载<code>node组件</code>
-7. 请把<code>node组件备份</code>目录里的两个组件拷贝到<code>node_modules</code>并且替换掉他们
+7. 请把<code>node组件备份</code>目录里的三个组件拷贝到<code>node_modules</code>并且替换掉他们
 
 # 工作步骤
 1. <code>gulp</code>初始化工作目录并且启动本地服务
@@ -33,6 +33,7 @@
     "babel-register": "^6.8.0",
     "browser-sync": "^2.12.5",
     "event-stream": "^3.3.2",
+    "foldero": "^0.1.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-babel": "^6.1.2",
@@ -40,6 +41,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-copy": "^0.0.2",
     "gulp-cssnano": "^2.1.2",
+    "gulp-data": "^1.2.1",
     "gulp-eslint": "^0.13.2",
     "gulp-htmlmin": "^2.0.0",
     "gulp-if": "^2.0.1",
@@ -62,6 +64,7 @@
     "gulp-zip": "^3.2.0",
     "gulp.spritesmith": "^6.2.1",
     "imagemin-pngquant": "^5.0.0",
+    "jade": "^1.11.0",
     "lodash.pickby": "^4.4.0",
     "main-bower-files": "^2.13.0",
     "merge-stream": "^1.0.0",
@@ -88,6 +91,7 @@
 |      └─public      -- 公用的scss的库
 ├─rev                ---> md5码(即css,image,js版本控制)
 └─webstart
+    ├─_data          ---> json文件存放目录
     ├─build          ---> 开发目录
     │  ├─img
     │  │  └─sprite   -- 待合并成雪碧图的图片文件
@@ -97,13 +101,3 @@
     └─dist           ---> 生产阶段文件存放目录
 
 </pre>
-
-
-
-<!-- # 一些问题 -->
-<!-- - 后面的可能加入json-serve -->
-    <!-- https://github.com/typicode/json-server -->
-    <!-- 这个可以更好的调试后台的数据 -->
-<!-- - 针对不同的业务生成不同的目录。 -->
-<!-- - bower的目录的支持问题 -->
-<!-- - 后面会把这个加入到yeoman-generator的脚手架去，这样就会更简单创建项目了 -->
