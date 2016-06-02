@@ -14,7 +14,9 @@
 7. 请把<code>node组件备份</code>目录里的三个组件拷贝到<code>node_modules</code>并且替换掉他们
 
 # 工作步骤
+
 提示：请确保没有程序占用到build目录下的文件
+
 1. <code>gulp</code>初始化工作目录并且启动本地服务
     - 清除<code>.tmp</code>、<code>rev</code>和<code>webstart</code>目录下的文件，并且把<code>templter/module</code>里的文件复制到<code>webstart/build</code>目录下
     - 开启服务，监控jade,js,scss以及图片的变化
