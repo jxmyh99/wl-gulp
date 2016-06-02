@@ -254,7 +254,10 @@ gulp.task('imagemin', () => {
         .pipe(gulp.dest(path.server_img))
         .pipe($.rev())
         .pipe($.rev.manifest())
-        .pipe(gulp.dest('./rev/img'));
+        .pipe(gulp.dest('./rev/img'))
+        .pipe(reload({
+            stream: true
+        }));
 
 });
 
@@ -437,9 +440,6 @@ gulp.task('serve', ['js','css','jade'], () => {
         port: 3000,
         // 自己在局域网中的ip地址
         host: '10.0.0.189',
-        logLevel: "debug",
-        //记录连接
-        logConnections: true,
         server: {
             baseDir: ['./.tmp'],
             routes: {
@@ -473,7 +473,9 @@ gulp.task('build:start',['copy'],()=>{
 });
 
 // 针对没有带依赖的打包
-gulp.task('build',['pack:ren']);
+gulp.task('build',['pack:ren'],()=>{
+    gulp.start('build:end');
+});
 
 // 最后的打包
 gulp.task('build:end',['backup','zip']);
@@ -487,8 +489,8 @@ gulp.task('help', () => {
     console.log("clean:build :删除开发目录文件");
     console.log("sprite      :精灵图生成");
     console.log("sprite:ret  :精灵图和2倍精灵图生成");
-    console.log("zip         :从输出目录zip压缩输出");
     console.log("serve       :本地服务带监控");
     console.log("help        :输出帮助信息");
-    console.log("backup      :备份工作目录");
+    console.log("default     :拷贝初始化文件和目录到工作目录以及启动serve task");
+    console.log("build       :输出项目并且自动压缩和备份源代码");
 });

@@ -11,6 +11,5 @@ append head
 	title #{title}
 //- 加入中间内容
 block content
-	ul.menu
-		each value in _json.title.comments
-			li= value.id
+	- var title = 'wl-gulp1'
+	h3.sprite #{title}
