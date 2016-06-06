@@ -20,16 +20,16 @@ const $ = gulpLoadPlugins(); //使用$来代替gulp-load-plugins，使用$.xxxx(
 const reload = browserSync.reload; //浏览器同步刷新
 
 /*
-* activity : 活动页面(自有的)
-* module   : 自有的页面
-* partner  : 合作伙伴的页面
-* project_name : 项目名字
+ * activity : 活动页面(自有的)
+ * module   : 自有的页面
+ * partner  : 合作伙伴的页面
+ * project_name : 项目名字
  */
-let wl = true,//是否是网兰的项目即是否是手机端页面
-    htmlmin = false,//html压缩
-    arr = ['activity','module','partner'],
+let wl = false, //是否是网兰的项目即是否是手机端页面
+    htmlmin = false, //html压缩
+    arr = ['activity', 'module', 'partner'],
     project_name = 'summer',
-    dist_file = wl ? arr[0] +'/'+project_name+'/' : ' ';
+    dist_file = wl ? arr[0] + '/' + project_name + '/' : ' ';
 
 
 /*
@@ -145,23 +145,17 @@ gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
 
 //es6 to es5
 gulp.task('script', ['lint'], () => {
-    gulp.src([path.s_js + '**/*.js'])
+    return gulp.src([path.s_js + '**/*.js'])
         .pipe($.plumber())
         .pipe($.sourcemaps.init())
         .pipe($.babel({
             presets: ['es2015']
         }))
         .pipe($.sourcemaps.write())
-        .pipe($.rename({
-            suffix: ".min" //后缀
-        }))
         .pipe($.rev())
-        .pipe(gulp.dest(path.server_js))
+        .pipe(gulp.dest(!wl ? './js/' : path.server_js))
         .pipe($.rev.manifest())
-        .pipe(gulp.dest('./rev/js'))
-        .pipe(reload({
-            stream: true
-        }));
+        .pipe(gulp.dest('./rev/js'));
 });
 // sass
 gulp.task('sass', ['fonts', 'imagemin'], () => {
@@ -172,65 +166,61 @@ gulp.task('sass', ['fonts', 'imagemin'], () => {
         .pipe($.sass.sync({
             outputStyle: 'expanded',
             precision: 10,
-            includePaths: ['.']
+            includePaths: [path.s_sass, './templter/scss/']
         })).on('error', $.sass.logError)
         .pipe($.autoprefixer({
-            vrowser: ['last 2 version', '> 5%', 'safari 5', 'ios 6', 'android 4','OperaMobile']
+            vrowser: ['last 2 version', '> 5%', 'safari 5', 'ios 6', 'android 4', 'OperaMobile']
         }))
         .pipe($.sourcemaps.write())
-        .pipe($.rename({
-            suffix: ".min" //后缀
-        }))
-        .pipe($.cssnano())
-        .pipe(gulp.dest('./css'))
-        .pipe(reload({
-            stream: true
-        }));
+        .pipe(gulp.dest('./css'));
 });
 // 合并css
-gulp.task('css',['sass'],()=>{
-    // 生成在主目录css
-    gulp.src('./css/*')
-        .pipe($.concat('main.css'))
-        .pipe($.rename({suffix:'.min'}))
-        .pipe($.cssnano())
-        .pipe(gulp.dest(path.server_css))
-        .pipe($.rev())
-        .pipe($.rev.manifest())
-        .pipe(gulp.dest('./rev/css'));
-    // 清除主目录css的所有文件
-    gulp.src(['./css'], {
+gulp.task('css', ['sass'], () => {
+        // 生成在主目录css
+        let create = gulp.src('./css/*')
+            .pipe($.plumber())
+            .pipe($.concat('main.css'))
+            .pipe($.rename({ suffix: '.min' }))
+            .pipe($.cssnano())
+            .pipe(gulp.dest(path.server_css))
+            .pipe($.rev())
+            .pipe($.rev.manifest())
+            .pipe(gulp.dest('./rev/css')),
+            // 清除主目录css的所有文件
+            clean = gulp.src(['./css'], {
                 read: false
             })
             .pipe($.plumber())
             .pipe($.rimraf({
                 force: true
             }));
+        return merge(create, clean);
+
+    })
+// 合并JS
+gulp.task('js', ['script'], () => {
+    // 生成在主目录css
+    let create = gulp.src('./js/*')
+        .pipe($.plumber())
+        .pipe($.concat('main.js'))
+        .pipe($.rename({ suffix: '.min' }))
+        .pipe($.uglify())
+        .pipe(gulp.dest(path.server_js))
+        .pipe($.rev())
+        .pipe($.rev.manifest())
+        .pipe(gulp.dest('./rev/js')),
+        // 清除主目录css的所有文件
+        clean = gulp.src(['./js'], {
+            read: false
+        })
+        .pipe($.plumber())
+        .pipe($.rimraf({
+            force: true
+        }));
+    return !wl ? merge(create, clean) : null;
 
 })
-// 合并JS
-gulp.task('js',['script'],()=>{
-    if(!wl){
-         // 生成在主目录css
-        gulp.src('./js/*')
-            .pipe($.concat('main.js'))
-            .pipe($.rename({suffix:'.min'}))
-            .pipe($.cssnano())
-            .pipe(gulp.dest(path.server_css))
-            .pipe($.rev())
-            .pipe($.rev.manifest())
-            .pipe(gulp.dest('./rev/js'));
-        // 清除主目录css的所有文件
-        gulp.src(['./js'], {
-                    read: false
-                })
-                .pipe($.plumber())
-                .pipe($.rimraf({
-                    force: true
-                }));
-            }
-})
-//字体文件生成
+ //字体文件生成
 gulp.task('fonts', () => {
     return gulp.src(require('main-bower-files')('**/*.{eot,svg,ttf,woff,woff2}', function(err) {})
             .concat(build + 'fonts/**/*'))
@@ -240,72 +230,87 @@ gulp.task('fonts', () => {
         .pipe($.rev.manifest())
         .pipe(gulp.dest('./rev/font'));
 });
+
+// 清除.tmp/img的图片文件
+gulp.task('clean:img', () => {
+    return gulp.src(path.server_img + "**/*.{jpg,jpeg,gif,svg,png}", {
+            read: false
+        })
+        .pipe($.plumber())
+        .pipe($.rimraf({
+            force: true
+        }));
+})
+
 // 压缩图片
-gulp.task('imagemin', () => {
-    return gulp.src([path.s_img + '**/*.{jpg,jpeg,gif,svg,png}',"!"+path.s_simg+"*"])
+gulp.task('imagemin', ['clean:img'], () => {
+    return gulp.src([path.s_img + '**/*.{jpg,jpeg,gif,svg,png}', '!' + path.s_simg + '*'])
         .pipe($.plumber())
         .pipe($.imagemin({
             progressive: true,
             svgoPlugins: [{
                 removeViewBox: false
             }],
-            use: [pngquant()]
+            use: [pngquant({ speed: 10 })]
         }))
         .pipe(gulp.dest(path.server_img))
         .pipe($.rev())
         .pipe($.rev.manifest())
-        .pipe(gulp.dest('./rev/img'))
-        .pipe(reload({
-            stream: true
-        }));
+        .pipe(gulp.dest('./rev/img'));
 
 });
 
 //jade
-gulp.task('jade',() => {
+gulp.task('jade', () => {
     let siteData = {};
-    if(fs.existsSync('webstart/_data/')){
-        siteData = foldero('webstart/_data/',{
-            recurse:true,
-            whitelist:'(.*/)*.+\.(json)$',
-            loader:function loadAsString(file) {
-              let json = {};
-              try {
-                  json = JSON.parse(fs.readFileSync(file, 'utf8'));
-              }
-              catch(e) {
-                console.log('Error Parsing JSON file: ' + file);
-                console.log('==== Details Below ====');
-                console.log(e);
-              }
-              return json;
+    if (fs.existsSync('webstart/_data/')) {
+        siteData = foldero('webstart/_data/', {
+            recurse: true,
+            whitelist: '(.*/)*.+\.(json)$',
+            loader: function loadAsString(file) {
+                let json = {};
+                try {
+                    json = JSON.parse(fs.readFileSync(file, 'utf8'));
+                } catch (e) {
+                    console.log('Error Parsing JSON file: ' + file);
+                    console.log('==== Details Below ====');
+                    console.log(e);
+                }
+                return json;
             }
         })
     }
     return gulp.src([build + "**/*.jade", './rev/**/*'])
         .pipe($.plumber())
-        .pipe($.revCollector())
         .pipe($.sourcemaps.init())
+        .pipe($.revCollector())
         .pipe($.jade({
-            jade:jade,
-              pretty: true,
-              locals: {
+            jade: jade,
+            pretty: true,
+            locals: {
                 debug: true,
                 site: {
-                  data: siteData
+                    data: siteData
                 }
-              }
+            }
         }))
         .pipe($.sourcemaps.write())
-        .pipe($.inject(gulp.src(require('main-bower-files')('**/*'),{read:false}),{relative:true}))
+        .pipe($.inject(gulp.src(require('main-bower-files')('**/*'), { read: false }), { relative: true }))
         .pipe(gulp.dest(server_root))
         .pipe(reload({
             stream: true
         }));
 });
 
-
-gulp.task('clean',['clean:server','clean:build','clean:rev']);
+gulp.task('html', ['jade'], () => {
+    gulp.src([server_root + "**/*.html", './rev/**/*'])
+        .pipe($.revCollector())
+        .pipe(gulp.dest(server_root))
+        .pipe(reload({
+            stream: true
+        }));
+})
+gulp.task('clean', ['clean:server', 'clean:build', 'clean:rev']);
 //删除文件
 gulp.task('clean:server', () => {
     return gulp.src([server_root], {
@@ -338,68 +343,68 @@ gulp.task('clean:rev', () => {
 });
 
 // 拷贝模板文件到工作目录
-gulp.task('copy',()=>{
+gulp.task('copy', ['clean'], () => {
     return gulp.src('./templter/module/**/*').pipe(gulp.dest(build));
 })
 
 
 // 生产阶段拷贝文件
-gulp.task('pack:copy',()=>{
-    let img = wl ? dist + 'Images/'+dist_file : dist+'img',
-        js = wl ? dist + 'Scripts/'+dist_file : dist+'js';
+gulp.task('pack:copy', () => {
+    let img = wl ? dist + 'Images/' + dist_file : dist + 'img',
+        js = wl ? dist + 'Scripts/' + dist_file : dist + 'js';
 
     // 修改img文件里的img引用
-    gulp.src([path.server_img + "**/*"]).pipe(gulp.dest(img));
+    gulp.src([path.server_img + "**/*.{jpg,jpeg,gif,svg,png}"]).pipe(gulp.dest(img));
     // 拷贝js文件到指定目录
-    gulp.src(path.server_js+'*.js').pipe(gulp.dest(js));
+    gulp.src(path.server_js + '*.js').pipe(gulp.dest(js));
     // 拷贝公用文件到指定目录
-    if(wl){
+    if (wl) {
         gulp.src('./webstart/resource/**/*').pipe(gulp.dest(dist));
     }
 
 })
 
 // css文件内的图片资源替换名
-gulp.task('pack:css',()=>{
-    let img = wl ? '../../../Images/'+dist_file : '../img',
-        css = wl ? dist + 'Content/'+dist_file : dist+'css';
-    return gulp.src(path.server_css+'*.css').pipe($.replace('img/',img)).pipe(gulp.dest(css));
+gulp.task('pack:css', () => {
+    let img = wl ? '../../../Images/' + dist_file : '../img',
+        css = wl ? dist + 'Content/' + dist_file : dist + 'css';
+    return gulp.src(path.server_css + '*.css').pipe($.replace('img/', img)).pipe(gulp.dest(css));
 })
 
 // 拷贝main-bower-fles
-gulp.task('pack:bower',() => {
+gulp.task('pack:bower', () => {
     let css = wl ? dist + 'Content/public/' : dist + 'css/public',
         js = wl ? dist + 'Scripts/public/' : dist + 'js/public',
         cssFiles = gulp.src(bowerFiles('**/*.css', function(err) {})).pipe(gulp.dest(css)),
         jsFiles = gulp.src(bowerFiles('**/*.js', function(err) {})).pipe($.uglify()).pipe(gulp.dest(js));
-    return gulp.src(server_root+'*.html')
-    .pipe($.inject(gulp.src(bowerFiles(),{read:false},{relative:true,empty:true})))
-    .pipe($.inject(merge(cssFiles,jsFiles)))
-    .pipe(gulp.dest(dist));
+    return gulp.src(server_root + '*.html')
+        .pipe($.inject(gulp.src(bowerFiles(), { read: false }, { relative: true, empty: true })))
+        .pipe($.inject(merge(cssFiles, jsFiles)))
+        .pipe(gulp.dest(dist));
 })
 
 gulp.task('wiredep', () => {
-  gulp.src(server_root+'*.html')
-    .pipe(wiredep({
-      ignorePath: /^(\.\.\/)*\.\./
-    }))
-    .pipe(gulp.dest(server_root));
+    gulp.src(server_root + '*.html')
+        .pipe(wiredep({
+            ignorePath: /^(\.\.\/)*\.\./
+        }))
+        .pipe(gulp.dest(server_root));
 });
 
 // 生产阶段替换资源文件名
-gulp.task('pack:ren',['pack:bower','pack:copy','pack:css'],()=>{
+gulp.task('pack:ren', ['pack:bower', 'pack:copy', 'pack:css'], () => {
     let dir_name = '\"/' + dist,
-        css = wl ? '\"Content/'+dist_file : '\"css/';
-  return gulp.src(dist+ "**/*.html")
-    .pipe($.replace('\"css/',css))
-    .pipe($.replace('\"img/',wl ? '\"Images/'+dist_file : '\"img/'))
-    .pipe($.replace('\"js/',wl ? '\"Scripts/'+dist_file : '\"js/'))
-    .pipe($.replace('\"./webstart/resource/','\"'))
-    .pipe($.replace(dir_name,'\"'))
-    .pipe($.if('*.html', $.htmlmin({ //如有需要，请开启
+        css = wl ? '\"Content/' + dist_file : '\"css/';
+    return gulp.src(dist + "**/*.html")
+        .pipe($.replace('\"css/', css))
+        .pipe($.replace('\"img/', wl ? '\"Images/' + dist_file : '\"img/'))
+        .pipe($.replace('\"js/', wl ? '\"Scripts/' + dist_file : '\"js/'))
+        .pipe($.replace('\"./webstart/resource/', '\"'))
+        .pipe($.replace(dir_name, '\"'))
+        .pipe($.if('*.html', $.htmlmin({
             collapseWhitespace: htmlmin
         })))
-    .pipe(gulp.dest(dist));
+        .pipe(gulp.dest(dist));
 })
 
 // 打包文件
@@ -420,7 +425,7 @@ gulp.task('backup', () => {
 // 其它文件一次输出到生产目录
 gulp.task('extras', () => {
     return gulp.src([
-        server_root+'*.*',
+        server_root + '*.*',
         '!tmp/*.html'
     ], {
         dot: true
@@ -432,8 +437,10 @@ gulp.task('extras', () => {
 /*
 更多信息请查看 https://www.npmjs.com/package/gulp-usemin
 如果bower不能及时生成 。把jade 改为 pack:bower
+
+暂时不能对js,scss文件监控
  */
-gulp.task('serve', ['js','css','jade'], () => {
+gulp.task('serve', ['js', 'css', 'html'], () => {
     browserSync.init({
         notify: true,
         open: false,
@@ -444,7 +451,7 @@ gulp.task('serve', ['js','css','jade'], () => {
             baseDir: ['./.tmp'],
             routes: {
                 '/bower_components': 'bower_components',
-                '/webstart/resource':'webstart/resource/'
+                '/webstart/resource': 'webstart/resource/'
             }
         }
     });
@@ -452,33 +459,39 @@ gulp.task('serve', ['js','css','jade'], () => {
     gulp.watch([
         server_root + '**/*.html',
         path.s_img + "**/*.{jpg,jpeg,gif,svg,png}",
+        path.s_js + "**/*.js",
+        path.s_sass + "**/*.{scss,sass}",
         'app/fonts/**/*'
     ]).on('change', reload);
 
-    gulp.watch(path.s_sass + "**/*.scss", ['css']);
-    gulp.watch([build + "**/*.jade", "webstart/_data/**/*.json"], ['jade']);
-    gulp.watch(path.s_js + "**/*.js", ['script']);
-    gulp.watch([path.s_img + "**/*.{jpg,jpeg,gif,svg,png}",'!'+path.s_simg +'*'], ['imagemin']);
-    gulp.watch(server_root+'fonts/**/*', ['fonts']);
+    gulp.watch(path.s_sass + "**/*", ['css'], (event) => {
+        console.log('file ' + event.path + ' was ' + event.type + ',runing tasks...');
+    });
+    gulp.watch([build + "**/*.jade", "webstart/_data/**/*.json"], ['html'], (event) => {
+        console.log('file ' + event.path + ' was ' + event.type + ',runing tasks...');
+    });
+    gulp.watch(path.s_js + "**/*", ['js'], (event) => {
+        console.log('file ' + event.path + ' was ' + event.type + ',runing tasks...');
+    });
+    gulp.watch([path.s_img + "**/*", '!' + path.s_simg + '*'], ['imagemin'], (event) => {
+        console.log('file ' + event.path + ' was ' + event.type + ',runing tasks...');
+    });
+    gulp.watch(server_root + 'fonts/**/*', ['fonts'], (event) => {
+        console.log('file ' + event.path + ' was ' + event.type + ',runing tasks...');
+    });
     gulp.watch('bower.json', ['wiredep']);
 });
 
 
 // 初始化步骤
-gulp.task('default',['clean'],()=>{
-    gulp.start('build:start');
-});
-gulp.task('build:start',['copy'],()=>{
-    gulp.start('serve');
-});
-
+gulp.task('default', ['serve']);
 // 针对没有带依赖的打包
-gulp.task('build',['pack:ren'],()=>{
+gulp.task('build', ['pack:ren'], () => {
     gulp.start('build:end');
 });
 
 // 最后的打包
-gulp.task('build:end',['backup','zip']);
+gulp.task('build:end', ['backup', 'zip']);
 
 // 帮助说明
 gulp.task('help', () => {

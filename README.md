@@ -17,10 +17,11 @@
 
 提示：请确保没有程序占用到build目录下的文件
 
-1. <code>gulp</code>初始化工作目录并且启动本地服务
+1. <code>gulp copy</code>清除rev,build,.tmp目录，并且初始化工作目录(build目录)
     - 清除<code>.tmp</code>、<code>rev</code>和<code>webstart</code>目录下的文件，并且把<code>templter/module</code>里的文件复制到<code>webstart/build</code>目录下
+2. <code>gulp</code>初始化工作目录并且启动本地服务
     - 开启服务，监控jade,js,scss以及图片的变化
-2. <code>gulp build</code>把<code>.tmp</code>目录的文件拷贝到<code>webstart/dist</code>目录下
+3. <code>gulp build</code>把<code>.tmp</code>目录的文件拷贝到<code>webstart/dist</code>目录下
     - <code>pack:bower</code> 拷贝bower依赖到指定目录
     - <code>pack:copy</code> 复制文件一指定目录下
     - <code>pack:css</code> 替换css里的图片引用路径的替换

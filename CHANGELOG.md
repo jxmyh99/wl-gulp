@@ -28,3 +28,10 @@
     - 增加了gulp-data插件,可以读取在'_data'目录下的'.json'文件
 - 2015/6/2
     - 修复工作目录图片变动不能刷新的bug
+- 2015/6/3
+    - 修复jade中使用while导致图片不能加入rev码的问题
+    - 整合了build和build:end的task为build
+    - 增加了一个clean:img，清除.tmp/img的文件，为了当我们删除某个图片的时间会把.tmp目录的图片也一起删除
+- 2015/6/6
+    - 继续修复了imagemin,js,css等Task
+    - 图片可以拷贝文件进入会刷新，但js,scss不会
