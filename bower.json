@@ -1,0 +1,19 @@
+{
+  "name": "wl-gulp",
+  "description": "网兰的gulp配置",
+  "main": "",
+  "authors": [
+    "zero"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}

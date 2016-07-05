@@ -1,0 +1,42 @@
+//- Custom Configuration
+block config
+  //- Setup site's base URL to match the "baseUrl" key within `package.json`
+  //- Otherwise default to relative pathing
+  - var baseUrl = config.baseUrl || './'
+  - var title = 'wl-home'
+  - var outputCss = project.wlEntry.iswl ? 'content/'+project.wlEntry.pname+'/lib/' : 'styles/'+project.wlEntry.pname+'/lib';
+  - var outputJs = project.wlEntry.iswl ? 'Scripts/'+project.wlEntry.pname+'/lib/' : 'scripts/'+project.wlEntry.pname+'/lib';
+  - var outputName = project.wlEntry.pname;
+  - _json = site.data
+doctype html
+
+<!--[if lt IE 9]>
+<html class='lt-ie9 no-js' lang='en'>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<html class='no-js' lang='en'>
+<!--<![endif]-->
+
+head
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+  meta(name='viewport', content='width=device-width, initial-scale=1.0')
+  title #{title}
+  block stylesheets
+    link(rel='stylesheet', href= baseUrl + 'styles/main.css')
+  <!-- build:css #{outputJs}/#{outputName}.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+body
+
+  block content
+
+  <!-- build:js #{outputJs}/#{outputName}.js -->
+  <!-- bower:js -->
+  <!-- endbower -->
+  <!-- endbuild -->
+  block scripts
+    script(src= baseUrl + 'scripts/main.js')
+
+</html>
