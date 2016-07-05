@@ -3,6 +3,5 @@ node_modules
 
 
 #忽略vscode的配置文件
-bower_components
 
 #忽略app下面的一些文件

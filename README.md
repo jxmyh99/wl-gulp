@@ -20,23 +20,24 @@
 # 工作步骤
 
 1. <code>gulp reset --pname <string> --wl <boolean> --pmodule <number(0-2)><code>初始化项目
-    <code>--pname</code> 项目名称<必填>
-    <code>--wl</code>    是否是网兰项目<选填>
-    <code>--pmodule</code>   存放的模块<如果--wl存在的话，此项必填>
-    <code>--pc</code>    建立一个pc端的项目
+    + <code>--pname</code> 项目名称<必填>
+    + <code>--wl</code>    是否是网兰项目<选填>
+    + <code>--pmodule</code>   存放的模块<如果--wl存在的话，此项必填>
+    + <code>--pc</code>    建立一个pc端的项目
     <code>--flex</code>  建立一个使用[flexible](https://github.com/amfe/lib-flexible)的手机端项目
-    --mb:建立一个手机端项目(此项为默认项)
-    例如：
-    <code>gulp reset --pname demo</code>建立一个demo项目
-    <code>gulp reset --pnane demo --wl --pmodule 1</code>建立一个为网兰的项目
-    <code>gulp reset --pname demo --</code>
+    + <code>--mb</code>建立一个手机端项目(此项为默认项)
+    > 例如：
+        - <code>gulp reset --pname demo</code>建立一个demo项目
+        - <code>gulp reset --pnane demo --wl --pmodule 1</code>建立一个为网兰的项目
+        - <code>gulp reset --pname demo --</code>
 2. <code>gulp serve</code>开启本地服务及监控文件
-    <code>--open</code> 打开浏览器
-    <code>--production</code>   代码生成build(生产阶段)目录
+    + <code>--open</code> 打开浏览器
+    + <code>--production</code>   代码生成build(生产阶段)目录
 3. <code>gulp pack</code>打包本地代码
 4. <code>gulp build</code>生成文件到build目录
 5. <code>gulp test</code>测试js代码
-    <code>--watch</code>监控测试代码
+    + <code>--watch</code>监控测试代码
+
 ***添加了 `--debug` 来查看额外的调试信息（例如数据回到您的模块中）***
 
 # 目录结构及文件
