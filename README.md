@@ -29,34 +29,34 @@
 | --pc    | 拷贝pc项目 | false | boolean
 | --flex    | 拷贝含有[flexible](https://github.com/amfe/lib-flexible)的移动端项目 | false | boolean
 | --mb    | 拷贝移动端项目(此项为默认值) | false | boolean
-
+<pre>
 例如：
 <code>gulp reset --pname demo</code>建立一个demo项目
 <code>gulp reset --pnane demo --wl --pmodule 1</code>建立一个为网兰的项目
 <code>gulp reset --pname demo --pc</code>建立一个pc端的demo项目
 <code>gulp reset --pnane demo --wl --pmodule 1 --flex</code>建立一个含有[flexible](https://github.com/amfe/lib-flexible)移动端名为demo的网兰项目
-
+</pre>
 ###gulp sprite 生成精灵图
 
 | task | 介绍 | 是否必填 | 参数类型 |
 |---------|-------|---------|---------
 | --x2    | 生成2倍精灵图 | false | boolean
-
+<pre>
 例如：
 <code>gulp sprite</code>生成精灵图
 <code>gulp sprite --x2</code>生成2倍精灵图，请保存在_sprite目录下含有*@2.png的图片
-
+</pre>
 ###gulp serve 开启本地服务及监控文件
 
 | task | 介绍 | 是否必填 | 参数类型 |
 |---------|-------|---------|---------
 | --open    | 打开浏览器 | false | boolean
 | --production    | 代码生成build(生产阶段)目录 | false | boolean
-
+<pre>
 例如：
 <code>gulp serve --open</code>开启本地服务并且打开浏览器
 <code>gulp serve --production</code>代码生成至build目录并且以此目录为服务目录，无监控文件
-
+</pre>
 ###gulp pack 打包代码
 
 含有的task
