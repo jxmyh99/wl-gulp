@@ -20,6 +20,7 @@
 # gulp工作流程
 
 ###gulp reset 初始化项目
+
 | task | 介绍 | 是否必填 | 参数类型 |
 |---------|-------
 | --pname    | 项目名称 | true | string
@@ -36,6 +37,7 @@
 > <code>gulp reset --pnane demo --wl --pmodule 1 --flex</code>建立一个含有[flexible](https://github.com/amfe/lib-flexible)移动端名为demo的网兰项目
 
 ###gulp sprite 生成精灵图
+
 | task | 介绍 | 是否必填 | 参数类型 |
 |---------|-------
 | --x2    | 生成2倍精灵图 | false | boolean
@@ -45,6 +47,7 @@
 > <code>gulp sprite --x2</code>生成2倍精灵图，请保存在_sprite目录下含有*@2.png的图片
 
 ###gulp serve 开启本地服务及监控文件
+
 | task | 介绍 | 是否必填 | 参数类型 |
 |---------|-------
 | --open    | 打开浏览器 | false | boolean
@@ -57,6 +60,7 @@
 ###gulp pack 打包代码
 
 含有的task
+
 | task | 介绍 |
 |---------|-------
 | backup    | 备份源代码至project_backup目录下
