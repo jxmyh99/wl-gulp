@@ -32,3 +32,6 @@
     - 新增加了less和stylus的编译支持
     - 新增加了package.json全局自定义配置
     - 新增加了project.json项目自定义配置
+- 2015/7/6
+    - 修复了test的task的不能测试的配置
+    - 删除了.eslitrc文件，把此配置放转置入了eslint的task中

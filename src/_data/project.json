@@ -2,12 +2,12 @@
 	"head":{
 		"//":"js和css的顶部加入",
 		"author":"zero",
-		"create":"2016年7月1日",
+		"create":"2016年7月2日",
 		"link":"http://www.33u3.com"
 	},
 	"wlEntry":{
 		"//":"项目名和项目模块 以及是不是网兰项目",
-		"pname":"abc",
+		"pname":"demo",
 		"pmodule":"$e2",
 		"iswl":false
 	}

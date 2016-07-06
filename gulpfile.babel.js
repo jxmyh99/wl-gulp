@@ -134,7 +134,7 @@ gulp.task('help', () => {
         html += "│ ├─包含方法\n";
         html += "│ ├─ --p <name>            :    创建页面，存放在src目录下\n";
         html += "│ ├─ --m <name>            :    创建模块，放在_modules目录下\n";
-        html += "│ └─ --<name>              :    选择所使用的css的编写语言，默认为css.\n";
+        html += "│ └─ --<sass>              :    选择所使用的css的编写语言，默认为css.\n";
         html += "├─gulp test                :    测试代码\n";
         html += "│ ├─包含方法\n";
         html += "│ └─ --watch               :    监控源文件\n";
@@ -153,7 +153,8 @@ gulp.task('save', () => {
         day = myDate.getDay();
     if (args._[0] == 'reset') {
         gulp.src(path.join(dirs.source, dirs.data, 'project.json')) //读取project.json文件
-            .pipe(plugins.replace(/\$e1+/gi, /^\D\w+\S/gi.test(args.pname) ? "$e1" : args.pname)) //替换pname
+            .pipe(plugins.plumber())
+            .pipe(plugins.replace(/\$e1+/gi, /^[a-zA-Z]+\S/gi.test(args.pname) ? args.pname : "$e1")) //替换pname
             .pipe(plugins.replace(/\$e2+/gi, /[0-2]{1}/gi.test(args.pmodule) ? config.wl.modules[args.pmodule] : "$e2")) //替换pmodule
             .pipe(plugins.replace(/false/gi, !!args.wl ? 'true' : 'false')) //替换wl
             .pipe(plugins.replace(/\$dc+/gi, year+'年'+month+'月'+day+'日')) //替换创建日期

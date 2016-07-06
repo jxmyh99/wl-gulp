@@ -17,37 +17,70 @@
 + 这里推荐您使用<code>cnpm</code>来下载各个组件。天朝，你懂的。
 + 运行<code>cnpm install</code>下载<code>node组件</code>
 
-# 工作步骤
+# gulp工作流程
 
-1. <code>gulp reset --pname [string] --wl [boolean] --pmodule [number(0-2)]<code>初始化项目
+###gulp reset 初始化项目
 
-    + <code>--pname</code> 项目名称<必填>
-    + <code>--wl</code>    是否是网兰项目<选填>
-    + <code>--pmodule</code>   存放的模块<如果--wl存在的话，此项必填>
-    + <code>--pc</code>    建立一个pc端的项目
-    <code>--flex</code>  建立一个使用[flexible](https://github.com/amfe/lib-flexible)的手机端项目
-    + <code>--mb</code>建立一个手机端项目(此项为默认项)
+| task | 介绍 | 是否必填 | 参数类型 |
+|---------|-------|---------|---------
+| --pname    | 项目名称 | true | string
+| --wl    | 项目名称 | false | boolean
+| --pmodule    | 资源存放处<0-2>取值范围 | false,如果--wl为true时，此项为true | number
+| --pc    | 拷贝pc项目 | false | boolean
+| --flex    | 拷贝含有[flexible](https://github.com/amfe/lib-flexible)的移动端项目 | false | boolean
+| --mb    | 拷贝移动端项目(此项为默认值) | false | boolean
+<pre>
+例如：
+<code>gulp reset --pname demo</code>建立一个demo项目
+<code>gulp reset --pnane demo --wl --pmodule 1</code>建立一个为网兰的项目
+<code>gulp reset --pname demo --pc</code>建立一个pc端的demo项目
+<code>gulp reset --pnane demo --wl --pmodule 1 --flex</code>建立一个含有[flexible](https://github.com/amfe/lib-flexible)移动端名为demo的网兰项目
+</pre>
+###gulp sprite 生成精灵图
 
-    > 例如：
-        - <code>gulp reset --pname demo</code>建立一个demo项目
-        - <code>gulp reset --pnane demo --wl --pmodule 1</code>建立一个为网兰的项目
-        - <code>gulp reset --pname demo --</code>
+| task | 介绍 | 是否必填 | 参数类型 |
+|---------|-------|---------|---------
+| --x2    | 生成2倍精灵图 | false | boolean
+<pre>
+例如：
+<code>gulp sprite</code>生成精灵图
+<code>gulp sprite --x2</code>生成2倍精灵图，请保存在_sprite目录下含有*@2.png的图片
+</pre>
+###gulp serve 开启本地服务及监控文件
 
-2. <code>gulp serve</code>开启本地服务及监控文件
+| task | 介绍 | 是否必填 | 参数类型 |
+|---------|-------|---------|---------
+| --open    | 打开浏览器 | false | boolean
+| --production    | 代码生成build(生产阶段)目录 | false | boolean
+<pre>
+例如：
+<code>gulp serve --open</code>开启本地服务并且打开浏览器
+<code>gulp serve --production</code>代码生成至build目录并且以此目录为服务目录，无监控文件
+</pre>
+###gulp pack 打包代码
 
-    + <code>--open</code> 打开浏览器
-    + <code>--production</code>   代码生成build(生产阶段)目录
+含有的task
 
-3. <code>gulp pack</code>打包本地代码
+| task | 介绍 |
+|---------|-------
+| backup    | 备份源代码至project_backup目录下
+| zip    | 打包和压缩即(zip)代码至project_zip目录下
 
-4. <code>gulp build</code>生成文件到build目录
+***代码会打包至'XXXX(年)/XX月份/'目录下***
 
-5. <code>gulp test</code>测试js代码
+<!-- ###gulp build 打包代码至build目录 -->
 
-    + <code>--watch</code>监控测试代码
-```
+###gulp test 测试单元代码
+
+| task | 介绍 | 是否必填 | 参数类型 |
+|---------|-------|---------|---------
+| --watch    | 监控测试代码 | false | boolean
+
+<pre>
+例如：
+<code>gulp test --watch</code> 测试单元代码并且监控代码
+</pre>
 ***添加了 `--debug` 来查看额外的调试信息（例如数据回到您的模块中）***
-```
 
 # 目录结构及文件
 
@@ -75,7 +108,7 @@
     │  │  ├─modules.js      -- js模板文件
     │  │  └─modules.scss    -- sass模板文件(默认为sass编译，需要其它查看[工作步骤](#工作步骤))
     │  └─page               -- 单页模板存放处
-    ├─flexible              -- 使用flexible的手机端模板文件
-    ├─mobile                -- 原生的手机端模板文件
+    ├─flexible              -- 使用flexible的移动端模板文件
+    ├─mobile                -- 原生的移动端模板文件
     └─pc                    -- pc端模板文件
 ```

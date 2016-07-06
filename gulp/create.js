@@ -24,19 +24,28 @@ export default function(gulp, tools, plugins, args, config, project, taskTarget,
         srcDir = 'module';
     }
     let src = path.join(templter, 'create/' + srcDir + '/**/*');
+    let argsAll = args.p || args.m;
     // 拷贝其它文件到src目录下,伪装成创建命令
     gulp.task('create', () => {
         return gulp.src([src])
-            .pipe(plugins.replace(srcDir, args.p || args.m))
-            .pipe(plugins.replace('Module', args.m.replace(/(\w)/, function(v) {
-                return v.toUpperCase() })))
+            .pipe(plugins.plumber())
+            .pipe(plugins.replace(srcDir, argsAll))
+            .pipe(plugins.if(!!args.m,plugins.replace('Module', argsAll.replace(/(\w)/, function(v) {
+                return v.toUpperCase() }))))
             .pipe(plugins.rename(function(path) {
                 // 替换文件名
-                path.basename = args.p || args.m;
+                if(path.dirname == 'tests'){
+                    path.basename = argsAll+'.test'
+                }else{
+                    path.basename = argsAll;
+                }
             }))
             .pipe(plugins.if('*.scss', plugins.rename((path) => {
                 path.extname = '.' + style;
             })))
-            .pipe(gulp.dest(dest));
+            .pipe(gulp.dest(dest))
+            .on('end',()=>{
+                console.log(!!args.m)
+            })
     });
 }
