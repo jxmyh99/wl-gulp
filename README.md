@@ -57,6 +57,41 @@
 <code>gulp serve --open</code>开启本地服务并且打开浏览器
 <code>gulp serve --production</code>代码生成至build目录并且以此目录为服务目录，无监控文件
 </pre>
+
+###gilp create 创建单页或创建模块
+
+| task | 介绍 | 是否必填 | 参数类型 |
+|---------|-------|---------|---------
+| --p    | 创建单页 | false | string
+| --m    | 创建模块 | false | string
+| --sass    | scss编译(默认值) | false | boolean
+| --less    | less编译 | false | boolean
+| --stylus    | stylus编译 | false | boolean
+| --css    | css | false | boolean
+<pre>
+例如：
+<code>gulp create --m header</code>创建hader模块
+输出：
+_modules/header
+_modules/header/tests
+_modules/header/tests/header.test.js
+_modules/header/header.js
+_modules/header/header.jade
+_modules/header/header.scss
+<code>gulp create -m footer --less</code>创建footer模块并且使用less来编译
+输出：
+_modules/footer
+_modules/footer/tests
+_modules/footer/tests/footer.test.js
+_modules/footer/footer.js
+_modules/footer/footer.jade
+_modules/footer/footer.less
+<code>gulp create -p list</code>创建list的单页
+输出：
+./list
+./list/list.jade
+</pre>
+
 ###gulp pack 打包代码
 
 含有的task
@@ -91,8 +126,8 @@
 ├─gulp                      ---> gulp各个task文件夹
 ├─build                     ---> 生产阶段代码文件夹
 ├─tmp                       ---> 暂存代码文件夹
-├─src                       ---> 模板文件
-|   ├─_data                 ---> jade数据存放处及项目信息存放处
+├─src                       ---> 源文件
+|   ├─_data                 -- jade数据存放处及项目信息存放处
 |   |  └─project.json       -- 项目资料存放及js,css头部内容
 |   ├─_images               -- 图片资源存放
 |   ├─_layouts              -- 初始的项目文件及目录

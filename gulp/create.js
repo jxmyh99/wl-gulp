@@ -8,14 +8,14 @@ export default function(gulp, tools, plugins, args, config, project, taskTarget,
         dest = path.join(dirs.source, args.p ? args.p : '_modules/' + args.m),
         style,
         srcDir;
-    if (args.sass || args.scss) {
-        style = 'sass';
+    if (args.css) {
+        style = 'css';
     } else if (args.less) {
         style = 'less';
     } else if (args.stylus) {
         style = 'stylus';
     } else {
-        style = 'css';
+        style = 'scss';
     }
 
     if (/^[a-zA-Z]+\S/gi.test(args.p) && !!args.p && args.p != true) {
