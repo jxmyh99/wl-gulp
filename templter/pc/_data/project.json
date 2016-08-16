@@ -1,13 +1,14 @@
 {
 	"head":{
-		"author":"",
-		"entry":"",
-		"create":"",
-		"update":""
+		"//":"js和css的顶部加入",
+		"author":"zero",
+		"create":"$dc",
+		"link":"http://www.33u3.com"
 	},
 	"wlEntry":{
-		"pname":"E$1",
-		"pmodule":"E$2",
+		"//":"项目名和项目模块 以及是不是网兰项目",
+		"pname":"$e1",
+		"pmodule":"$e2",
 		"iswl":false
 	}
 }

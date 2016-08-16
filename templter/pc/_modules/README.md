@@ -1,41 +1,25 @@
 # Modules
 
-This "Modules" folder is designated for reusable pieces of code that are used within layouts and pages.
+这个“模块”文件夹被指定为在布局和页面中使用的可重复使用的代码片段.
 
 ## Example
 
-An example link module:
+
+一个示例链接模块:
 
 ```
 └── link
     ├── __tests__
     |   └── link.spec.js
-    ├── link.{jade,nunjucks}
+    ├── link.jade
     ├── link.js
     └── link.scss
 ```
 
-Each module should include a template, javascript file, stylesheet, and unit test file (if doing unit testing).
-These files should use the same name, i.e `link`. If you don't need one of the files in a module, feel free to delete it.
+每个模块包括一个模板，JavaScript文件，样式表，和单元测试文件（如果做单元测试）.
+这些文件应该使用相同的名称，即“链接”。如果你不需要在一个模块中的一个文件，就可以自由地删除它.
 
-## Sub-generator
-
-You can easily create new modules using the built-in sub-generator like so:
-
-```
-yo yeogurt:module link
-```
-
-### Atomic modules
-
-You can also create modules specific to [atomic design](http://patternlab.io/about.html) as well
-by using the `--atomic` option with the following values: `atom`, `molecule`, and `organism`:
-
-```
-yo yeogurt:module link --atomic=atom
-```
-
-This will place your new module within the corresponding atomic folder like the following:
+这将将您的新模块放在相应的原子文件夹中，如以下:
 
 ```
 └── atoms

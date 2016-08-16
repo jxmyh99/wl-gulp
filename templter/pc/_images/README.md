@@ -1,4 +1,4 @@
-# Images
+# 图片
 
-This "Images" folder is designated for all image files (jpg, jpeg, png, gif, svg).
-During development and production builds, images will be compressed using [imagemin](https://github.com/imagemin/imagemin).
+这个是图片文件夹 (jpg, jpeg, png, gif, svg).
+在开发和生产过程中，图像将被压缩使用 [imagemin](https://github.com/imagemin/imagemin).

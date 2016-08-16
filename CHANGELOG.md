@@ -35,3 +35,8 @@
 - 2015/7/6
     - 修复了test的task的不能测试的配置
     - 删除了.eslitrc文件，把此配置放转置入了eslint的task中
+- 2016/8/16
+    - 添加了tools.checkDateFormat()方法，用来格式化日期
+    - 修复了css和js顶部加入说明
+    - 增加了创建模块给js和css上增加模块说明
+    - 增加了bower.json变动后，html重新编译

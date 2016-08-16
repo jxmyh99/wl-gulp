@@ -6,10 +6,10 @@ export default function(gulp, tools, plugins, args, config, project, taskTarget,
     let ename = project.wlEntry.pname;
     if (ename) {
         gulp.task('zip', () => {
-            return gulp.src(taskTarget)
+            return gulp.src(taskTarget + '**/*')
                 .pipe(plugins.plumber())
                 .pipe(plugins.sourcemaps.init())
-                .pipe(plugins.zip(args.pname + '.zip'))
+                .pipe(plugins.zip(ename + '.zip'))
                 .pipe(plugins.sourcemaps.write('./'))
                 .pipe(gulp.dest(tools.getPack('../project_zip')))
                 .on('end', () => {

@@ -7,6 +7,8 @@ export default function(gulp, tools, plugins, args, config, project, taskTarget,
         templter = dirs.templter,
         dest = path.join(taskTarget),
         tmp;
+
+
     /*
       --pc 则拷贝templter/pc下面的模板到src
       --mb 则拷贝templter/mobile的文件到src

@@ -1,138 +1,148 @@
 {
-  "name": "wl-gulp",
-  "version": "1.2.1",
-  "description": "网兰的gulp配置",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jxmyh99/wl-gulp.git"
-  },
-  "author": "zero",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jxmyh99/wl-gulp/issues"
-  },
-  "homepage": "https://github.com/jxmyh99/wl-gulp#readme",
-  "devDependencies": {
-    "autoprefixer": "^6.3.6",
-    "babel-core": "^6.9.1",
-    "babel-eslint": "^6.0.4",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.9.0",
-    "babelify": "^7.3.0",
-    "browser-sync": "^2.13.0",
-    "browserify": "^13.0.1",
-    "browserify-shim": "^3.8.12",
-    "chai": "^3.5.0",
-    "del": "^2.2.0",
-    "envify": "^3.4.0",
-    "foldero": "^0.1.1",
-    "glob": "^7.0.3",
-    "gulp": "^3.9.1",
-    "gulp-changed": "^1.3.0",
-    "gulp-cssnano": "^2.1.2",
-    "gulp-data": "^1.2.1",
-    "gulp-eslint": "^2.0.0",
-    "gulp-header": "^1.8.7",
-    "gulp-htmlmin": "^2.0.0",
-    "gulp-if": "^2.0.1",
-    "gulp-imagemin": "^3.0.1",
-    "gulp-jade": "^1.1.0",
-    "gulp-less": "^3.1.0",
-    "gulp-load-plugins": "^1.2.4",
-    "gulp-newer": "^1.2.0",
-    "gulp-plumber": "^1.1.0",
-    "gulp-postcss": "^6.1.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.5.4",
-    "gulp-run-sequence": "^0.3.2",
-    "gulp-sass": "^2.3.1",
-    "gulp-size": "^2.1.0",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-stylus": "^2.4.0",
-    "gulp-uglify": "^1.5.3",
-    "gulp-useref": "^3.1.0",
-    "gulp-util": "^3.0.7",
-    "gulp-zip": "^3.2.0",
-    "gulp.spritesmith": "^6.2.1",
-    "imagemin-pngquant": "^5.0.0",
-    "imagemin-svgo": "^5.1.0",
-    "jade": "^1.11.0",
-    "js-yaml": "^3.6.1",
-    "karma": "^0.13.22",
-    "karma-browserify": "^5.0.5",
-    "karma-chai": "^0.1.0",
-    "karma-mocha": "^1.0.1",
-    "karma-phantomjs-launcher": "^1.0.0",
-    "lodash": "^4.13.1",
-    "merge-stream": "^1.0.0",
-    "minimist": "^1.2.0",
-    "mocha": "^2.5.3",
-    "node-msg": "^1.2.3",
-    "node-sass": "^3.7.0",
-    "phantomjs": "^2.1.7+deprecated",
-    "rimraf": "^2.5.2",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.7.0",
-    "wiredep": "^4.0.0",
-    "wrench": "^1.5.9"
-  },
-  "scripts": {
-    "clean-deps": "rimraf node_modules"
-  },
-  "engines": {
-    "node": ">=0.12.0"
-  },
-  "//": "以下是自定义配置",
-  "config": {
-    "//": "打包js,css资源",
-    "host": "127.0.0.1",
-    "port": "3000",
-    "baseUrl": "./",
-    "directories": {
-      "source": "src",
-      "//": "data数据存放处",
-      "templter": "templter",
-      "destination": "build",
-      "temporary": "tmp",
-      "modules": "_modules",
-      "layouts": "_layouts",
-      "images": "_images",
-      "sprite": "_sprite",
-      "styles": "_styles",
-      "scripts": "_scripts",
-      "data": "_data"
+    "name": "wl-gulp",
+    "version": "1.2.2",
+    "description": "网兰的gulp配置",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jxmyh99/wl-gulp.git"
     },
-    "wl": {
-      "css": "Content",
-      "//": "public--网兰公用资源",
-      "js": "Scripts",
-      "img": "Images",
-      "pname": "pname",
-      "modules": [
-        "module",
-        "activity",
-        "partner",
-        "public"
-      ]
+    "author": "zero",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/jxmyh99/wl-gulp/issues"
     },
-    "entries": {
-      "js": "main**.{js,coffee}",
-      "css": "main**.{sass,scss,less,styl,css}"
+    "homepage": "https://github.com/jxmyh99/wl-gulp#readme",
+    "devDependencies": {
+        "autoprefixer": "^6.3.6",
+        "babel-core": "^6.9.1",
+        "babel-eslint": "^6.0.4",
+        "babel-plugin-add-module-exports": "^0.2.1",
+        "babel-preset-es2015": "^6.9.0",
+        "babelify": "^7.3.0",
+        "browser-sync": "^2.13.0",
+        "browserify": "^13.0.1",
+        "browserify-shim": "^3.8.12",
+        "chai": "^3.5.0",
+        "del": "^2.2.0",
+        "envify": "^3.4.0",
+        "foldero": "^0.1.1",
+        "glob": "^7.0.3",
+        "gulp": "^3.9.1",
+        "gulp-changed": "^1.3.0",
+        "gulp-cssnano": "^2.1.2",
+        "gulp-data": "^1.2.1",
+        "gulp-eslint": "^2.0.0",
+        "gulp-header": "^1.8.7",
+        "gulp-htmlmin": "^2.0.0",
+        "gulp-if": "^2.0.1",
+        "gulp-imagemin": "^3.0.1",
+        "gulp-jade": "^1.1.0",
+        "gulp-less": "^3.1.0",
+        "gulp-load-plugins": "^1.2.4",
+        "gulp-newer": "^1.2.0",
+        "gulp-plumber": "^1.1.0",
+        "gulp-postcss": "^6.1.1",
+        "gulp-rename": "^1.2.2",
+        "gulp-replace": "^0.5.4",
+        "gulp-run-sequence": "^0.3.2",
+        "gulp-sass": "^2.3.1",
+        "gulp-size": "^2.1.0",
+        "gulp-sourcemaps": "^1.6.0",
+        "gulp-stylus": "^2.4.0",
+        "gulp-uglify": "^1.5.3",
+        "gulp-useref": "^3.1.0",
+        "gulp-util": "^3.0.7",
+        "gulp-zip": "^3.2.0",
+        "gulp.spritesmith": "^6.2.1",
+        "imagemin-pngquant": "^5.0.0",
+        "imagemin-svgo": "^5.1.0",
+        "jade": "^1.11.0",
+        "js-yaml": "^3.6.1",
+        "karma": "^0.13.22",
+        "karma-browserify": "^5.0.5",
+        "karma-chai": "^0.1.0",
+        "karma-mocha": "^1.0.1",
+        "karma-phantomjs-launcher": "^1.0.0",
+        "lodash": "^4.13.1",
+        "merge-stream": "^1.0.0",
+        "minimist": "^1.2.0",
+        "mocha": "^2.5.3",
+        "node-msg": "^1.2.3",
+        "node-sass": "^3.7.0",
+        "phantomjs": "^2.1.7+deprecated",
+        "rimraf": "^2.5.2",
+        "vinyl-buffer": "^1.0.0",
+        "vinyl-source-stream": "^1.1.0",
+        "watchify": "^3.7.0",
+        "wiredep": "^4.0.0",
+        "wrench": "^1.5.9"
+    },
+    "scripts": {
+        "clean-deps": "rimraf node_modules"
+    },
+    "engines": {
+        "node": ">=0.12.0"
+    },
+    "//": "以下是自定义配置",
+    "config": {
+        "//": "打包js,css资源",
+        "host": "127.0.0.1",
+        "port": "3000",
+        "baseUrl": "./",
+        "author": "zero",
+        "url": "http://www.33u3.com",
+        "directories": {
+            "source": "src",
+            "//": "data数据存放处",
+            "templter": "templter",
+            "destination": "build",
+            "temporary": "tmp",
+            "modules": "_modules",
+            "layouts": "_layouts",
+            "images": "_images",
+            "sprite": "_sprite",
+            "styles": "_styles",
+            "scripts": "_scripts",
+            "data": "_data"
+        },
+        "wl": {
+            "css": "Content",
+            "//": "public--网兰公用资源",
+            "js": "Scripts",
+            "img": "Images",
+            "pname": "pname",
+            "modules": [
+                "module",
+                "activity",
+                "partner",
+                "public"
+            ]
+        },
+        "entries": {
+            "js": "main**.{js,coffee}",
+            "css": "main**.{sass,scss,less,styl,css}"
+        }
+    },
+    "browserify": {
+        "transform": [
+            "browserify-shim"
+        ]
+    },
+    "browser": {
+        "slick-carousel": "./node_modules/slick-carousel/slick/slick.js"
+    },
+    "browserify-shim": {
+        "slick-carousel": {
+            "exports": null,
+            "depends": "jquery:$"
+        }
+    },
+    "dependencies": {
+        "contentstream": "^1.0.0",
+        "gif-encoder": "^0.5.0",
+        "jpeg-js": "^0.2.0",
+        "ndarray-ops": "^1.2.2",
+        "pngjs-nozlib": "^1.0.0",
+        "through": "^2.3.8"
     }
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
-  "browser": {
-    "slick-carousel": "./node_modules/slick-carousel/slick/slick.js"
-  },
-  "browserify-shim": {
-    "slick-carousel": {
-      "exports": null,
-      "depends": "jquery:$"
-    }
-  }
 }

@@ -147,3 +147,35 @@ _modules/footer/footer.less
     ├─mobile                -- 原生的移动端模板文件
     └─pc                    -- pc端模板文件
 ```
+
+#文件引用
+
+### script
+
+```
+//ES5
+var $ = require('jquery');
+
+$(function(){
+    console.log('hello');
+    });
+//ES6/2015
+import $ from 'jquery'
+
+$(()=>{
+    console.log('hello');
+    })
+```
+
+
+### scss
+
+```
+//scss
+@import 'css/sass'
+//css
+@import 'css/css'
+
+```
+
+### sass

@@ -1,11 +1,10 @@
 # Data
 
-This "Data" folder is the designated location for `json` and `yaml` file data
-that will be injected into your templates under the `site.data` property.
+这个"data"支持'json'和'yaml'格式的文件，访问方式是'site.data'来访问
 
 ## Example
 
-If you have two data files in this data folder with the following contents:
+例如:
 
 ```
 └── _data
@@ -29,7 +28,7 @@ siteName: Sample
 }]
 ```
 
-They would be converted to the following object:
+他们将被转换为以下对象:
 
 ```js
 {
@@ -44,9 +43,8 @@ They would be converted to the following object:
 }
 ```
 
-And would then be injected into your template within the `site.data` property
-so you could access your data like so:
-
+然后将被注入到您的模板中:
+下面以jade来演示
 ```jade
 h1= site.data.global.siteName //- Sample
 ul.menu

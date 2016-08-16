@@ -8,6 +8,33 @@ export default function(gulp, tools, plugins, args, config, project, taskTarget,
         dest = path.join(dirs.source, args.p ? args.p : '_modules/' + args.m),
         style,
         srcDir;
+    let _project = {
+        'pname': args.m,
+        'author': config.author,
+        'create': tools.getDate(),
+        'link': config.url
+
+    };
+    let banner = [
+        '@charset "UTF-8";',
+        '/**',
+        ' * @entry <%= pkg.pname %>',
+        ' * @author <%= pkg.author %>',
+        ' * @create <%= pkg.create %>',
+        ' * @link <%= pkg.link %>',
+        ' */',
+        ''
+    ].join('\n');
+    let banner1 = [
+        '"use strict" ;',
+        '/**',
+        ' * @entry <%= pkg.pname %>',
+        ' * @author <%= pkg.author %>',
+        ' * @create <%= pkg.create %>',
+        ' * @link <%= pkg.link %>',
+        ' */',
+        ''
+    ].join('\n');
     if (args.css) {
         style = 'css';
     } else if (args.less) {
@@ -30,21 +57,28 @@ export default function(gulp, tools, plugins, args, config, project, taskTarget,
         return gulp.src([src])
             .pipe(plugins.plumber())
             .pipe(plugins.replace(srcDir, argsAll))
-            .pipe(plugins.if(!!args.m,plugins.replace('Module', argsAll.replace(/(\w)/, function(v) {
-                return v.toUpperCase() }))))
+            .pipe(plugins.if(!!args.m, plugins.replace('Module', argsAll.replace(/(\w)/, function(v) {
+                return v.toUpperCase()
+            }))))
+            .pipe(plugins.if('*.{scss,sass,less,css,styl}', plugins.header(banner, { pkg: _project })))
+            .pipe(plugins.if('*.{js,coffee}', plugins.header(banner1, { pkg: _project })))
             .pipe(plugins.rename(function(path) {
                 // 替换文件名
-                if(path.dirname == 'tests'){
-                    path.basename = argsAll+'.test'
-                }else{
-                    path.basename = argsAll;
+                if (path.dirname == 'tests') {
+                    path.basename = argsAll + '.test';
+                    return false;
                 }
+                if (!!args.p) {
+                    path.basename = argsAll;
+                    return false;
+                }
+
             }))
             .pipe(plugins.if('*.scss', plugins.rename((path) => {
                 path.extname = '.' + style;
             })))
             .pipe(gulp.dest(dest))
-            .on('end',()=>{
+            .on('end', () => {
                 console.log(!!args.m)
             })
     });
