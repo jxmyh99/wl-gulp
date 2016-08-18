@@ -118,8 +118,8 @@ gulp.task('serve', args.production ? ['sprite', 'imagemin', 'css', 'html', 'bowe
 
 
 //测试(暂时没有通过)
-// Testing
-gulp.task('test', ['eslint'], (done) => {
+// Testing ['eslint'],
+gulp.task('test', (done) => {
     new KarmaServer({
         configFile: path.join(__dirname, '/karma.conf.js'),
         singleRun: !args.watch,

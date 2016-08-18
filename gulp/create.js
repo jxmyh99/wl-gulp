@@ -67,8 +67,7 @@ export default function(gulp, tools, plugins, args, config, project, taskTarget,
                 if (path.dirname == 'tests') {
                     path.basename = argsAll + '.test';
                     return false;
-                }
-                if (!!args.p) {
+                } else {
                     path.basename = argsAll;
                     return false;
                 }

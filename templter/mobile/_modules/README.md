@@ -30,3 +30,15 @@
         ├── link.js
         └── link.scss
 ```
+
+引用方法
+
+```
+ +link({__class:'classname'})
+```
+
+生成代码
+
+```
+    <div class='classname'></div>
+```

@@ -1,10 +1,16 @@
 //- 引入初始模块
 extends _layouts/base
 
+include list/list
+include _modules/header/header
+
 //- 修改默认配置
 append config
-	- title = 'welcome wanglan'
-
+  - title = 'welcome2'
 //- 内容块
 block content
-	p welcome wanglan
+  h1 22323
+  //- - var class = {class:'abc'}
+  +header({__class: 'documentation'})(data-url='abc')
+  +alert('2','alert5')
+    p abc

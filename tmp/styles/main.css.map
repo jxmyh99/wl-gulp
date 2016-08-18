@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.scss"],"names":[],"mappings":"AAAA;EACI,uBAAuB;CAC1B;;AAED;EACI,gBAAgB;EAChB,aAAa;CAChB;;AAED;EACI,YAAY;CACf","file":"main.css","sourcesContent":["body {\r\n    background-color: blue;\r\n}\r\n\r\nh2 {\r\n    font-size: 28px;\r\n    color: green;\r\n}\r\n\r\nh3 {\r\n    color: blue;\r\n}\r\n"],"sourceRoot":"/source/"}
