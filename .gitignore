@@ -1,6 +1,7 @@
 #忽略node模块
 node_modules
 src
+tmp
 #忽略vscode的配置文件
 
 #忽略app下面的一些文件

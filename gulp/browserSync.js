@@ -2,13 +2,14 @@
 
 export default function(gulp, tools, plugins, args, config, project, taskTarget, browserSync) {
     // BrowserSync
+    var port = args.port || 3000;
     gulp.task('browserSync', () => {
         browserSync.init({
             open: args.open ? 'external' : false,
             // 自己在局域网中的ip地址
-            host: config.locahost,
+            // host: config.locahost,
             startPath: config.baseUrl,
-            port: config.port || 3000,
+            port: port,
             server: {
                 baseDir: taskTarget,
                 routes: (() => {

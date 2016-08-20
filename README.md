@@ -52,10 +52,13 @@
 |---------|-------|---------|---------
 | --open    | 打开浏览器 | false | boolean
 | --production    | 代码生成build(生产阶段)目录 | false | boolean
+| --port    | 修改端口  | false | number
 <pre>
 例如：
 <code>gulp serve --open</code>开启本地服务并且打开浏览器
 <code>gulp serve --production</code>代码生成至build目录并且以此目录为服务目录，无监控文件
+<code>gulp serve --port 3200</code>
+本地服务开启在3200端口
 </pre>
 
 ###gilp create 创建单页或创建模块
