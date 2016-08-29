@@ -28,16 +28,22 @@ export default function(gulp, tools, plugins, args, config, project, taskTarget,
     // 编译
     if (dest) {
         gulp.task('css', () => {
-            return gulp.src(src).pipe(plugins.plumber())
+            return gulp.src(src).pipe(plugins.plumber({
+                    errorHandler: function(err) {
+                        console.log(err);
+                        this.emit('end');
+                    }
+                }))
                 .pipe(plugins.sourcemaps.init())
                 .pipe(plugins.if('*.{sass,scss}', plugins.sass({
-                    outputStyle: 'expanded',
-                    precision: 10,
-                    includePaths: [
-                        path.join(dirs.source, dirs.styles),
-                        path.join(dirs.source, dirs.modules)
-                    ]
-                }).on('error', plugins.sass.logError)))
+                        outputStyle: 'expanded',
+                        precision: 10,
+                        includePaths: [
+                            path.join(dirs.source, dirs.styles),
+                            path.join(dirs.source, dirs.modules)
+                        ]
+                    }).on('error', plugins.sass.logError)))
+
                 .pipe(plugins.if('*.less', plugins.less({
                     paths: [
                         path.join(dirs.source, dirs.styles),
@@ -57,6 +63,7 @@ export default function(gulp, tools, plugins, args, config, project, taskTarget,
                 .pipe(plugins.if(isReplace, plugins.replace(/images\//gi, '../../' + wldirs.img + '/' + pmodule + '/' + pname + '/')))
                 .pipe(plugins.if(args.production, plugins.cssnano({ rebase: false })))
                 .pipe(plugins.sourcemaps.write('./'))
+                .pipe(plugins.plumber.stop())
                 .pipe(gulp.dest(dest))
                 .pipe(browserSync.stream({ match: '**/*.css' }));
             Msg.log(Msg.green("css path:" + dest));
